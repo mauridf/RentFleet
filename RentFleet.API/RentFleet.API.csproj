@@ -26,12 +26,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Controllers\" />
-    <Folder Include="Middlewares\" />
-    <Folder Include="Filters\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\RentFleet.Application\RentFleet.Application.csproj" />
     <ProjectReference Include="..\RentFleet.Infrastructure\RentFleet.Infrastructure.csproj" />
   </ItemGroup>

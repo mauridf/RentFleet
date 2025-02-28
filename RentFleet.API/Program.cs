@@ -1,5 +1,16 @@
+using FluentValidation;
+using MediatR;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
+using RentFleet.Domain.Interfaces;
+using RentFleet.Infrastructure.Logs;
 using RentFleet.Infrastructure.Persistence.Contexts;
+using RentFleet.Infrastructure.Persistence.Repositories;
+using RentFleet.Infrastructure.Security;
+using Serilog;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -7,12 +18,56 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<RentFleetDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
+// Registra o PasswordHasher
+builder.Services.AddScoped<PasswordHasher>();
+
+// Registra o repositório de usuários
+builder.Services.AddScoped<IUserRepository, UserRepository>();
+
+
+// Configuração do MediatR e AutoMapper
+builder.Services.AddMediatR(typeof(Program).Assembly);
+builder.Services.AddAutoMapper(typeof(Program).Assembly);
+
+builder.Services.AddValidatorsFromAssembly(typeof(Program).Assembly);
+
+// Configuração do JWT
+var jwtSettings = new JwtSettings();
+builder.Configuration.GetSection("JwtSettings").Bind(jwtSettings);
+builder.Services.AddSingleton(jwtSettings);
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+})
+.AddJwtBearer(options =>
+{
+    options.TokenValidationParameters = new TokenValidationParameters
+    {
+        ValidateIssuer = true,
+        ValidateAudience = true,
+        ValidateLifetime = true,
+        ValidateIssuerSigningKey = true,
+        ValidIssuer = jwtSettings.Issuer,
+        ValidAudience = jwtSettings.Audience,
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(jwtSettings.Secret))
+    };
+});
+
+// Configuração do Serilog
+SerilogConfig.Configure();
+builder.Host.UseSerilog();
+
 // Adiciona suporte a controllers da API
 builder.Services.AddControllers();
 
 // Configuração do Swagger
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+// Configuração do Swagger
+builder.Services.AddSwaggerGen(c =>
+{
+    c.SwaggerDoc("v1", new OpenApiInfo { Title = "RentFleet API", Version = "v1" });
+});
 
 var app = builder.Build();
 

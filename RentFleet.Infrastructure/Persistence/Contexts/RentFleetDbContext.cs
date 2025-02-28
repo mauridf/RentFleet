@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using RentFleet.Domain.Entities;
+using RentFleet.Infrastructure.Persistence.Configurations;
 
 namespace RentFleet.Infrastructure.Persistence.Contexts
 {
@@ -25,6 +26,8 @@ namespace RentFleet.Infrastructure.Persistence.Contexts
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.ApplyConfiguration(new UserConfiguration());
+
             // Relacionamentos
             modelBuilder.Entity<DadosTecnicosVeiculo>()
                 .HasOne(d => d.Veiculo)

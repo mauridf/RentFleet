@@ -1,17 +1,15 @@
-﻿using System;
+﻿using MediatR;
 
-namespace RentFleet.Domain.Entities
+namespace RentFleet.Application.Commands
 {
-    public class User
+    public class UpdateUserCommand : IRequest
     {
         public int Id { get; set; }
         public string NomeAtendente { get; set; }
         public string Telefone { get; set; }
         public string Email { get; set; }
         public string Senha { get; set; }
-        public string Tipo { get; set; } // Administrador, Atendente, Gerente.
+        public string Tipo { get; set; }
         public bool Ativo { get; set; }
-        public DateTime DataCadastro { get; set; }
-        public DateTime DataAlteracao { get; set; }
     }
 }

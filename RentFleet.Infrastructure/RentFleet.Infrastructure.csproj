@@ -12,14 +12,18 @@
 
   <ItemGroup>
     <PackageReference Include="AWSSDK.S3" Version="3.7.415.8" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity" Version="2.3.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.2" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="9.0.2">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Microsoft.Extensions.Caching.StackExchangeRedis" Version="9.0.2" />
+    <PackageReference Include="Microsoft.IdentityModel.Tokens" Version="8.6.0" />
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="9.0.3" />
+    <PackageReference Include="Serilog.Sinks.Console" Version="6.0.0" />
     <PackageReference Include="Serilog.Sinks.Elasticsearch" Version="10.0.0" />
+    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="8.6.0" />
   </ItemGroup>
 
   <ItemGroup>
@@ -28,12 +32,8 @@
 
   <ItemGroup>
     <Folder Include="Cache\" />
-    <Folder Include="Logs\" />
     <Folder Include="Services\" />
-    <Folder Include="Security\" />
-    <Folder Include="Persistence\Configurations\" />
     <Folder Include="Persistence\SeedData\" />
-    <Folder Include="Persistence\Repositories\" />
   </ItemGroup>
 
 </Project>

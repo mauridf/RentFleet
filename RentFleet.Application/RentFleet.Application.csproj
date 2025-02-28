@@ -15,17 +15,13 @@
 
   <ItemGroup>
     <ProjectReference Include="..\RentFleet.Domain\RentFleet.Domain.csproj" />
+    <ProjectReference Include="..\RentFleet.Infrastructure\RentFleet.Infrastructure.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Commands\" />
-    <Folder Include="DTOs\" />
     <Folder Include="Interfaces\" />
-    <Folder Include="Mapping\" />
     <Folder Include="Mediator\" />
-    <Folder Include="Validators\" />
     <Folder Include="Services\" />
-    <Folder Include="Queries\" />
   </ItemGroup>
 
 </Project>
