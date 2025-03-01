@@ -1,16 +1,13 @@
-using FluentValidation;
-using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
-using RentFleet.Domain.Interfaces;
 using RentFleet.Infrastructure.Logs;
 using RentFleet.Infrastructure.Persistence.Contexts;
-using RentFleet.Infrastructure.Persistence.Repositories;
-using RentFleet.Infrastructure.Security;
+using RentFleet.API.Extensions; // Importa a classe de extensão
 using Serilog;
 using System.Text;
+using RentFleet.Infrastructure.Security;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -18,18 +15,8 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<RentFleetDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-// Registra o PasswordHasher
-builder.Services.AddScoped<PasswordHasher>();
-
-// Registra o repositório de usuários
-builder.Services.AddScoped<IUserRepository, UserRepository>();
-
-
-// Configuração do MediatR e AutoMapper
-builder.Services.AddMediatR(typeof(Program).Assembly);
-builder.Services.AddAutoMapper(typeof(Program).Assembly);
-
-builder.Services.AddValidatorsFromAssembly(typeof(Program).Assembly);
+// Registra todos os serviços, repositórios, handlers, etc.
+builder.Services.AddApplicationServices();
 
 // Configuração do JWT
 var jwtSettings = new JwtSettings();
@@ -63,7 +50,6 @@ builder.Services.AddControllers();
 
 // Configuração do Swagger
 builder.Services.AddEndpointsApiExplorer();
-// Configuração do Swagger
 builder.Services.AddSwaggerGen(c =>
 {
     c.SwaggerDoc("v1", new OpenApiInfo { Title = "RentFleet API", Version = "v1" });
