@@ -175,9 +175,21 @@ namespace RentFleet.API.Controllers
         [Authorize(Roles = "ADM,USR")]
         public async Task<ActionResult<IEnumerable<ClienteDTO>>> GetByTipo(string tipo)
         {
-            var query = new GetClienteByTipoQuery { Tipo = tipo };
-            var clientes = await _mediator.Send(query);
-            return Ok(clientes);
+            try
+            {
+                Log.Information("Buscando todos os clientes pro Tipo.");
+
+                var query = new GetClienteByTipoQuery { Tipo = tipo };
+                var clientes = await _mediator.Send(query);
+
+                Log.Information("Todos os clientes por Tipo foram buscados com sucesso.");
+                return Ok(clientes);
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, "Erro ao buscar todos os clientes por tipo.");
+                return StatusCode(500, "Erro interno ao buscar todos clientes por tipo.");
+            }
         }
 
         [HttpPost("cadastrar-cliente")]
