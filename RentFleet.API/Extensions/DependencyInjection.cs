@@ -8,6 +8,10 @@ using RentFleet.Application.Commands;
 using RentFleet.Application.Queries;
 using RentFleet.Application.DTOs;
 using RentFleet.Application.Mappings;
+using RentFleet.Application.Mapping;
+using RentFleet.Application.Handlers.Cliente;
+using RentFleet.Application.Commands.Clientes;
+using RentFleet.Application.Queries.Cliente;
 
 namespace RentFleet.API.Extensions
 {
@@ -17,6 +21,7 @@ namespace RentFleet.API.Extensions
         {
             // Registra repositórios
             services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<IClienteRepository, ClienteRepository>();
 
             // Registra serviços de infraestrutura
             services.AddScoped<PasswordHasher>();
@@ -27,6 +32,7 @@ namespace RentFleet.API.Extensions
 
             // Registra AutoMapper
             services.AddAutoMapper(typeof(UserProfile).Assembly);
+            services.AddAutoMapper(typeof(ClienteProfile).Assembly);
 
             // Registra FluentValidation
             services.AddValidatorsFromAssembly(typeof(Program).Assembly);
@@ -39,7 +45,20 @@ namespace RentFleet.API.Extensions
             services.AddTransient<IRequestHandler<GetUserByNomeQuery, UserDTO>, GetUserByNomeQueryHandler>();
             services.AddTransient<IRequestHandler<GetUserByEmailQuery, UserDTO>, GetUserByEmailQueryHandler>();
             services.AddTransient<IRequestHandler<GetAllUsersQuery, IEnumerable<UserDTO>>, GetAllUsersQueryHandler>();
+
             services.AddTransient<IRequestHandler<LoginCommand, string>, LoginCommandHandler>();
+
+            services.AddTransient<IRequestHandler<CreateClienteCommand, int>, CreateClienteCommandHandler>();
+            services.AddTransient<IRequestHandler<UpdateClienteCommand, Unit>, UpdateClienteCommandHandler>();
+            services.AddTransient<IRequestHandler<DeleteClienteCommand, Unit>, DeleteClienteCommandHandler>();
+            services.AddTransient<IRequestHandler<GetClienteByIdQuery, ClienteDTO>, GetClienteByIdQueryHander>();
+            services.AddTransient<IRequestHandler<GetClienteByNomeQuery, ClienteDTO>, GetClienteByNomeQueryHander>();
+            services.AddTransient<IRequestHandler<GetClienteByEmailQuery, ClienteDTO>, GetClienteByEmailQueryHander>();
+            services.AddTransient<IRequestHandler<GetClienteByCPFCNPJQuery, ClienteDTO>, GetClienteByCPFCNPJQueryHander>();
+            services.AddTransient<IRequestHandler<GetAllClientesQuery, IEnumerable<ClienteDTO>>, GetAllClientesQueryHandler>();
+            services.AddTransient<IRequestHandler<GetAllClientesByCidadeQuery, IEnumerable<ClienteDTO>>, GetAllClientesByCidadeQueryHandler>();
+            services.AddTransient<IRequestHandler<GetAllClientesByUFQuery, IEnumerable<ClienteDTO>>, GetAllClientesByUFQueryHandler>();
+            services.AddTransient<IRequestHandler<GetClienteByTipoQuery, IEnumerable<ClienteDTO>>, GetClienteByTipoQueryHandler>();
 
             return services;
         }
