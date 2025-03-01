@@ -37,7 +37,11 @@ namespace RentFleet.Application.Handlers.User
                 }
 
                 log.Information("Usuário {E-mail} encontrado com sucesso.", request.Email);
-                return _mapper.Map<UserDTO>(user);
+
+                var userDto = _mapper.Map<UserDTO>(user);
+                log.Information("Mapeamento concluído com sucesso para o usuário {Email}.", request.Email);
+
+                return userDto;
             }
             catch (Exception ex)
             {

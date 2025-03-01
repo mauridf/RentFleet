@@ -4,11 +4,13 @@ using Serilog;
 using RentFleet.Application.Commands;
 using RentFleet.Application.Queries;
 using RentFleet.Application.DTOs;
+using Microsoft.AspNetCore.Authorization;
 
 namespace RentFleet.API.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
+    [Authorize]
     public class UserController : ControllerBase
     {
         private readonly IMediator _mediator;
@@ -85,6 +87,7 @@ namespace RentFleet.API.Controllers
         }
 
         [HttpGet("buscar-todos")]
+        [Authorize(Roles = "ADM")]
         public async Task<ActionResult<IEnumerable<UserDTO>>> GetAll()
         {
             try
@@ -105,6 +108,7 @@ namespace RentFleet.API.Controllers
         }
 
         [HttpPost("cadastrar-novo-usuario")]
+        [AllowAnonymous]
         public async Task<ActionResult<int>> Create([FromBody] CreateUserCommand command)
         {
             var log = Log.ForContext("Email", command.Email); // Adiciona contexto ao log
@@ -126,6 +130,7 @@ namespace RentFleet.API.Controllers
         }
 
         [HttpPut("editar-usuario")]
+        [Authorize(Roles = "ADM")]
         public async Task<ActionResult> Update([FromBody] UpdateUserCommand command)
         {
             var log = Log.ForContext("UserId", command.Id); // Adiciona contexto ao log
@@ -147,6 +152,7 @@ namespace RentFleet.API.Controllers
         }
 
         [HttpDelete("excluir-usuario/{id}")]
+        [Authorize(Roles = "ADM")]
         public async Task<ActionResult> Delete(int id)
         {
             var log = Log.ForContext("UserId", id); // Adiciona contexto ao log

@@ -7,6 +7,7 @@ using RentFleet.Application.Handlers.User;
 using RentFleet.Application.Commands;
 using RentFleet.Application.Queries;
 using RentFleet.Application.DTOs;
+using RentFleet.Application.Mappings;
 
 namespace RentFleet.API.Extensions
 {
@@ -19,12 +20,13 @@ namespace RentFleet.API.Extensions
 
             // Registra serviços de infraestrutura
             services.AddScoped<PasswordHasher>();
+            services.AddScoped<JwtTokenGenerator>();
 
             // Registra MediatR
             services.AddMediatR(typeof(Program).Assembly);
 
             // Registra AutoMapper
-            services.AddAutoMapper(typeof(Program).Assembly);
+            services.AddAutoMapper(typeof(UserProfile).Assembly);
 
             // Registra FluentValidation
             services.AddValidatorsFromAssembly(typeof(Program).Assembly);
@@ -37,6 +39,7 @@ namespace RentFleet.API.Extensions
             services.AddTransient<IRequestHandler<GetUserByNomeQuery, UserDTO>, GetUserByNomeQueryHandler>();
             services.AddTransient<IRequestHandler<GetUserByEmailQuery, UserDTO>, GetUserByEmailQueryHandler>();
             services.AddTransient<IRequestHandler<GetAllUsersQuery, IEnumerable<UserDTO>>, GetAllUsersQueryHandler>();
+            services.AddTransient<IRequestHandler<LoginCommand, string>, LoginCommandHandler>();
 
             return services;
         }

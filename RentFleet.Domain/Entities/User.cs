@@ -9,7 +9,7 @@ namespace RentFleet.Domain.Entities
         public string Telefone { get; set; }
         public string Email { get; set; }
         public string Senha { get; set; }
-        public string Tipo { get; set; } // Administrador, Atendente, Gerente.
+        public string Tipo { get; set; } // ADM (Admin), USR (User).
         public bool Ativo { get; set; }
         public DateTime DataCadastro { get; set; }
         public DateTime DataAlteracao { get; set; }
