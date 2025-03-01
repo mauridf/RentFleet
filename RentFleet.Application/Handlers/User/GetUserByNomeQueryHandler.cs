@@ -6,6 +6,7 @@ using RentFleet.Domain.Interfaces;
 using AutoMapper;
 using System.Threading;
 using System.Threading.Tasks;
+using Serilog;
 
 namespace RentFleet.Application.Handlers.User
 {
@@ -22,11 +23,27 @@ namespace RentFleet.Application.Handlers.User
 
         public async Task<UserDTO> Handle(GetUserByNomeQuery request, CancellationToken cancellationToken)
         {
-            var user = await _userRepository.GetByNomeAsync(request.Nome);
-            if (user == null)
-                throw new Exception("Usuário não encontrado.");
+            var log = Log.ForContext("Nome", request.Nome); // Adiciona contexto ao log
 
-            return _mapper.Map<UserDTO>(user);
+            try
+            {
+                log.Information("Buscando usuário por Nome: {Nome}.", request.Nome);
+
+                var user = await _userRepository.GetByNomeAsync(request.Nome);
+                if (user == null)
+                {
+                    log.Warning("Usuário com Nome {Nome} não encontrado.", request.Nome);
+                    throw new Exception("Usuário não encontrado.");
+                }
+
+                log.Information("Usuário {Nome} encontrado com sucesso.", request.Nome);
+                return _mapper.Map<UserDTO>(user);
+            }
+            catch (Exception ex)
+            {
+                log.Error(ex, "Erro ao buscar usuário por Nome: {Nome}.", request.Nome);
+                throw;
+            }
         }
     }
 }

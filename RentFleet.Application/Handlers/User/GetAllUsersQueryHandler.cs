@@ -7,6 +7,7 @@ using AutoMapper;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
+using Serilog;
 
 namespace RentFleet.Application.Handlers.User
 {
@@ -23,8 +24,26 @@ namespace RentFleet.Application.Handlers.User
 
         public async Task<IEnumerable<UserDTO>> Handle(GetAllUsersQuery request, CancellationToken cancellationToken)
         {
-            var users = await _userRepository.GetAllAsync();
-            return _mapper.Map<IEnumerable<UserDTO>>(users);
+            var log = Log.ForContext("UserId", request); // Adiciona contexto ao log
+
+            try
+            {
+                log.Information("Buscando todos os usuários.", request);
+
+                var users = await _userRepository.GetAllAsync();
+                if (users == null)
+                {
+                    log.Warning("Nenhum Usuário foi encontrado.", request);
+                    throw new Exception("Nenhum usuário encontrado.");
+                }
+                log.Information("Todos Usuários cadastrados encontrados.", request);
+                return _mapper.Map<IEnumerable<UserDTO>>(users);
+            }
+            catch (Exception ex) 
+            {
+                log.Error(ex, "Erro ao buscar todos usuários.", request);
+                throw;
+            }
         }
     }
 }

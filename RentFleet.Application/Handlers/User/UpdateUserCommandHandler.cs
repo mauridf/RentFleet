@@ -1,11 +1,8 @@
 ﻿using MediatR;
 using RentFleet.Application.Commands;
-using RentFleet.Domain.Entities;
 using RentFleet.Domain.Interfaces;
 using RentFleet.Infrastructure.Security;
-using System;
-using System.Threading;
-using System.Threading.Tasks;
+using Serilog;
 
 namespace RentFleet.Application.Handlers.User
 {
@@ -22,22 +19,35 @@ namespace RentFleet.Application.Handlers.User
 
         public async Task<Unit> Handle(UpdateUserCommand request, CancellationToken cancellationToken)
         {
-            var user = await _userRepository.GetByIdAsync(request.Id);
-            if (user == null)
-                throw new Exception("Usuário não encontrado.");
+            var log = Log.ForContext("Email", request.Email); // Adiciona contexto ao log
 
-            user.NomeAtendente = request.NomeAtendente;
-            user.Telefone = request.Telefone;
-            user.Email = request.Email;
-            user.Senha = _passwordHasher.HashPassword(request.Senha);
-            user.Tipo = request.Tipo;
-            user.Ativo = request.Ativo;
-            user.DataAlteracao = DateTime.UtcNow;
+            try
+            {
+                log.Information("Editando usuário com email: {Email}.", request.Email);
 
-            await _userRepository.UpdateAsync(user);
+                var user = await _userRepository.GetByIdAsync(request.Id);
+                if (user == null)
+                    throw new Exception("Usuário não encontrado.");
 
-            // Retorna Unit.Value para indicar que o comando foi executado com sucesso
-            return Unit.Value;
+                user.NomeAtendente = request.NomeAtendente;
+                user.Telefone = request.Telefone;
+                user.Email = request.Email;
+                user.Senha = _passwordHasher.HashPassword(request.Senha);
+                user.Tipo = request.Tipo;
+                user.Ativo = request.Ativo;
+                user.DataAlteracao = DateTime.UtcNow;
+
+                await _userRepository.UpdateAsync(user);
+
+                // Retorna Unit.Value para indicar que o comando foi executado com sucesso
+                log.Information("Usuário {Email} editado com sucesso. ID: {UserId}.", request.Email, user.Id);
+                return Unit.Value;
+            }
+            catch (Exception ex)
+            {
+                log.Error(ex, "Erro ao editar usuário com email: {Email}.", request.Email);
+                throw;
+            }
         }
     }
 }
