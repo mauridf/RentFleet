@@ -12,6 +12,9 @@ using RentFleet.Application.Mapping;
 using RentFleet.Application.Handlers.Cliente;
 using RentFleet.Application.Commands.Clientes;
 using RentFleet.Application.Queries.Cliente;
+using RentFleet.Application.Commands.Veiculo;
+using RentFleet.Application.Handlers.Veiculo;
+using RentFleet.Application.Queries.Veiculo;
 
 namespace RentFleet.API.Extensions
 {
@@ -22,6 +25,7 @@ namespace RentFleet.API.Extensions
             // Registra repositórios
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IClienteRepository, ClienteRepository>();
+            services.AddScoped<IVeiculoRepository, VeiculoRepository>();
 
             // Registra serviços de infraestrutura
             services.AddScoped<PasswordHasher>();
@@ -33,6 +37,7 @@ namespace RentFleet.API.Extensions
             // Registra AutoMapper
             services.AddAutoMapper(typeof(UserProfile).Assembly);
             services.AddAutoMapper(typeof(ClienteProfile).Assembly);
+            services.AddAutoMapper(typeof(VeiculoProfile).Assembly);
 
             // Registra FluentValidation
             services.AddValidatorsFromAssembly(typeof(Program).Assembly);
@@ -59,6 +64,22 @@ namespace RentFleet.API.Extensions
             services.AddTransient<IRequestHandler<GetAllClientesByCidadeQuery, IEnumerable<ClienteDTO>>, GetAllClientesByCidadeQueryHandler>();
             services.AddTransient<IRequestHandler<GetAllClientesByUFQuery, IEnumerable<ClienteDTO>>, GetAllClientesByUFQueryHandler>();
             services.AddTransient<IRequestHandler<GetClienteByTipoQuery, IEnumerable<ClienteDTO>>, GetClienteByTipoQueryHandler>();
+
+            services.AddTransient<IRequestHandler<CreateVeiculoCommand, int>, CreateVeiculoCommandHandler>();
+            services.AddTransient<IRequestHandler<UpdateVeiculoCommand, Unit>, UpdateVeiculoCommandHandler>();
+            services.AddTransient<IRequestHandler<DeleteVeiculoCommand, Unit>, DeleteVeiculoCommandHandler>();
+            services.AddTransient<IRequestHandler<GetVeiculoByIdQuery, VeiculoDTO>, GetVeiculoByIdQueryHandler>();
+            services.AddTransient<IRequestHandler<GetVeiculoByPlacaQuery, VeiculoDTO>, GetVeiculoByPlacaQueryHandler>();
+            services.AddTransient<IRequestHandler<GetVeiculoByChassiQuery, VeiculoDTO>, GetVeiculoByChassiQueryHandler>();
+            services.AddTransient<IRequestHandler<GetAllVeiculosQuery, IEnumerable<VeiculoDTO>>, GetAllVeiculosQueryHandler>();
+            services.AddTransient<IRequestHandler<GetAllVeiculosCategoriaQuery, IEnumerable<VeiculoDTO>>, GetAllVeiculosCategoriaQueryHandler>();
+            services.AddTransient<IRequestHandler<GetAllVeiculosByCombustivelQuery, IEnumerable<VeiculoDTO>>, GetAllVeiculosCombustivelQueryHandler>();
+            services.AddTransient<IRequestHandler<GetAllVeiculosByTipoQuery, IEnumerable<VeiculoDTO>>, GetAllVeiculosByTipoQueryHandler>();
+            services.AddTransient<IRequestHandler<GetAllVeiculosByNumeroPortasQuery, IEnumerable<VeiculoDTO>>, GetAllVeiculosByNumeroPortasQueryHandler>();
+            services.AddTransient<IRequestHandler<GetAllVeiculosByModeloQuery, IEnumerable<VeiculoDTO>>, GetAllVeiculosByModeloQueryHandler>();
+            services.AddTransient<IRequestHandler<GetAllVeiculosByMarcaQuery, IEnumerable<VeiculoDTO>>, GetAllVeiculosByMarcaQueryHandler>();
+            services.AddTransient<IRequestHandler<GetAllVeiculosByCorQuery, IEnumerable<VeiculoDTO>>, GetAllVeiculosByCorQueryHandler>();
+            services.AddTransient<IRequestHandler<GetAllVeiculosByAnoFabricacaoModeloQuery, IEnumerable<VeiculoDTO>>, GetAllVeiculosByAnoFabricacaoModeloQueryHandler>();
 
             return services;
         }

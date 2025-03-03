@@ -1,12 +1,18 @@
-﻿using RentFleet.Domain.Enums;
+﻿using MediatR;
+using RentFleet.Domain.Enums;
+using System.Text.Json.Serialization;
 
-namespace RentFleet.Domain.Entities
+namespace RentFleet.Application.Commands.Veiculo
 {
-    public class Veiculo
+    public class UpdateVeiculoCommand : IRequest
     {
         public int Id { get; set; }
+        [JsonConverter(typeof(JsonStringEnumConverter))]
         public TipoVeiculo Tipo { get; set; }
+
+        [JsonConverter(typeof(JsonStringEnumConverter))]
         public CategoriaVeiculo Categoria { get; set; }
+
         public string Marca { get; set; }
         public string Modelo { get; set; }
         public int AnoFabricacao { get; set; }
@@ -18,8 +24,8 @@ namespace RentFleet.Domain.Entities
         public decimal QuilometragemAtual { get; set; }
         public int NumeroPortas { get; set; }
         public decimal CapacidadeTanque { get; set; }
+
+        [JsonConverter(typeof(JsonStringEnumConverter))]
         public TipoCombustivel Combustivel { get; set; }
-        public DateTime DataCadastro { get; set; }
-        public DateTime DataAlteracao { get; set; }
     }
 }

@@ -1,8 +1,8 @@
 ﻿using RentFleet.Domain.Enums;
 
-namespace RentFleet.Domain.Entities
+namespace RentFleet.Application.DTOs
 {
-    public class Veiculo
+    public class VeiculoDTO
     {
         public int Id { get; set; }
         public TipoVeiculo Tipo { get; set; }

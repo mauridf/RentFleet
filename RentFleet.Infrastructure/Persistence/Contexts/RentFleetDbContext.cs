@@ -26,7 +26,10 @@ namespace RentFleet.Infrastructure.Persistence.Contexts
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            // Aplica as configurações das entidades
             modelBuilder.ApplyConfiguration(new UserConfiguration());
+            modelBuilder.ApplyConfiguration(new ClienteConfiguration());
+            modelBuilder.ApplyConfiguration(new VeiculoConfiguration());
 
             // Relacionamentos
             modelBuilder.Entity<DadosTecnicosVeiculo>()
