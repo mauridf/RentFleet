@@ -7,21 +7,21 @@ namespace RentFleet.Application.Validators
     {
         public UpdateVeiculoValidator() 
         {
-            RuleFor(c => c.Id).NotEmpty();
-            RuleFor(c => c.Tipo).NotEmpty();
-            RuleFor(c => c.Categoria).NotEmpty();
-            RuleFor(c => c.Marca).NotEmpty().MaximumLength(100);
-            RuleFor(c => c.Modelo).NotEmpty().MaximumLength(100);
-            RuleFor(c => c.AnoFabricacao).NotEmpty();
-            RuleFor(c => c.AnoModelo).NotEmpty();
-            RuleFor(c => c.Cor).NotEmpty().MaximumLength(50);
-            RuleFor(c => c.Placa).NotEmpty().MaximumLength(8);
-            RuleFor(c => c.Chassi).NotEmpty().MaximumLength(17);
-            RuleFor(c => c.QuilometragemInicial).NotEmpty();
-            RuleFor(c => c.QuilometragemAtual).NotEmpty();
-            RuleFor(c => c.NumeroPortas).NotEmpty();
-            RuleFor(c => c.CapacidadeTanque).NotEmpty();
-            RuleFor(c => c.Combustivel).NotEmpty();
+            RuleFor(v => v.Id).NotEmpty();
+            RuleFor(v => v.Tipo).NotEmpty();
+            RuleFor(v => v.Categoria).NotEmpty();
+            RuleFor(v => v.Marca).NotEmpty().MaximumLength(100);
+            RuleFor(v => v.Modelo).NotEmpty().MaximumLength(100);
+            RuleFor(v => v.AnoFabricacao).NotEmpty();
+            RuleFor(v => v.AnoModelo).NotEmpty();
+            RuleFor(v => v.Cor).NotEmpty().MaximumLength(50);
+            RuleFor(v => v.Placa).NotEmpty().MaximumLength(8);
+            RuleFor(v => v.Chassi).NotEmpty().MaximumLength(17);
+            RuleFor(v => v.QuilometragemInicial).NotEmpty();
+            RuleFor(v => v.QuilometragemAtual).NotEmpty();
+            RuleFor(v => v.NumeroPortas).NotEmpty();
+            RuleFor(v => v.CapacidadeTanque).NotEmpty();
+            RuleFor(v => v.Combustivel).NotEmpty();
         }
     }
 }

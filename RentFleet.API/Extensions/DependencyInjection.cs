@@ -15,6 +15,12 @@ using RentFleet.Application.Queries.Cliente;
 using RentFleet.Application.Commands.Veiculo;
 using RentFleet.Application.Handlers.Veiculo;
 using RentFleet.Application.Queries.Veiculo;
+using RentFleet.Application.Commands.DadosCaminhao;
+using RentFleet.Application.Handlers.DadosCaminhao;
+using RentFleet.Application.Queries.DadosCaminhao;
+using RentFleet.Application.Commands.DadosMoto;
+using RentFleet.Application.Handlers.DadosMoto;
+using RentFleet.Application.Queries.DadosMoto;
 
 namespace RentFleet.API.Extensions
 {
@@ -26,6 +32,8 @@ namespace RentFleet.API.Extensions
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IClienteRepository, ClienteRepository>();
             services.AddScoped<IVeiculoRepository, VeiculoRepository>();
+            services.AddScoped<IDadosCaminhaoRepository, DadosCaminhaoRepository>();
+            services.AddScoped<IDadosMotoRepository, DadosMotoRepository>();
 
             // Registra serviços de infraestrutura
             services.AddScoped<PasswordHasher>();
@@ -38,6 +46,8 @@ namespace RentFleet.API.Extensions
             services.AddAutoMapper(typeof(UserProfile).Assembly);
             services.AddAutoMapper(typeof(ClienteProfile).Assembly);
             services.AddAutoMapper(typeof(VeiculoProfile).Assembly);
+            services.AddAutoMapper(typeof(DadosCaminhaoProfile).Assembly);
+            services.AddAutoMapper(typeof(DadosMotoProfile).Assembly);
 
             // Registra FluentValidation
             services.AddValidatorsFromAssembly(typeof(Program).Assembly);
@@ -80,6 +90,16 @@ namespace RentFleet.API.Extensions
             services.AddTransient<IRequestHandler<GetAllVeiculosByMarcaQuery, IEnumerable<VeiculoDTO>>, GetAllVeiculosByMarcaQueryHandler>();
             services.AddTransient<IRequestHandler<GetAllVeiculosByCorQuery, IEnumerable<VeiculoDTO>>, GetAllVeiculosByCorQueryHandler>();
             services.AddTransient<IRequestHandler<GetAllVeiculosByAnoFabricacaoModeloQuery, IEnumerable<VeiculoDTO>>, GetAllVeiculosByAnoFabricacaoModeloQueryHandler>();
+
+            services.AddTransient<IRequestHandler<CreateDadosCaminhaoCommand, int>, CreateDadosCaminhaoCommandHandler>();
+            services.AddTransient<IRequestHandler<UpdateDadosCaminhaoCommand, Unit>, UpdateDadosCaminhaoCommandHandler>();
+            services.AddTransient<IRequestHandler<DeleteDadosCaminhaoCommand, Unit>, DeleteDadosCaminhaoCommandHandler>();
+            services.AddTransient<IRequestHandler<GetDadosCaminhaoByIdQuery, DadosCaminhaoDTO>, GetDadosCaminhaoByIdQueryHandler>();
+
+            services.AddTransient<IRequestHandler<CreateDadosMotoCommand, int>, CreateDadosMotoCommandHandler>();
+            services.AddTransient<IRequestHandler<UpdateDadosMotoCommand, Unit>, UpdateDadosMotoCommandHandler>();
+            services.AddTransient<IRequestHandler<DeleteDadosMotoCommand, Unit>, DeleteDadosMotoCommandHandler>();
+            services.AddTransient<IRequestHandler<GetDadosMotoByIdQuery, DadosMotoDTO>, GetDadosMotoByIdQueryHandler>();
 
             return services;
         }

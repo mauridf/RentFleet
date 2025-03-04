@@ -46,12 +46,7 @@
         Touring, // Moto
         Leve, // Caminhao
         Medio, // Caminhao
-        Pesado, // Caminhao
-        CavaloMecanico, // Caminhao
-        Basculante, // Caminhao
-        Cegonha, // Caminhao
-        Tanque, // Caminhao
-        Frigorifico // Caminhao
+        Pesado // Caminhao
     }
 
     public enum TipoCombustivel
@@ -106,7 +101,11 @@
     {
         Cegonha,
         Bau,
-        Cacamba
+        Cacamba,
+        Basculante,
+        CavaloMecanico,
+        Tanque,
+        Frigorifico
     }
 
     public enum TipoCarroceria
