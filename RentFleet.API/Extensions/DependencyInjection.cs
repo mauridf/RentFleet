@@ -21,6 +21,12 @@ using RentFleet.Application.Queries.DadosCaminhao;
 using RentFleet.Application.Commands.DadosMoto;
 using RentFleet.Application.Handlers.DadosMoto;
 using RentFleet.Application.Queries.DadosMoto;
+using RentFleet.Application.Commands.DocumentoDigitalizado;
+using RentFleet.Application.Handlers.DocumentoDigitalizado;
+using RentFleet.Application.Queries.DocumentoDigitalizado;
+using RentFleet.Application.Commands.FotoVeiculo;
+using RentFleet.Application.Handlers.FotoVeiculo;
+using RentFleet.Application.Queries.FotoVeiculo;
 
 namespace RentFleet.API.Extensions
 {
@@ -34,6 +40,8 @@ namespace RentFleet.API.Extensions
             services.AddScoped<IVeiculoRepository, VeiculoRepository>();
             services.AddScoped<IDadosCaminhaoRepository, DadosCaminhaoRepository>();
             services.AddScoped<IDadosMotoRepository, DadosMotoRepository>();
+            services.AddScoped<IDocumentoDigitalizadoRepository, DocumentoDigitalizadoRepository>();
+            services.AddScoped<IFotoVeiculoRepository, FotoVeiculoRepository>();
 
             // Registra serviços de infraestrutura
             services.AddScoped<PasswordHasher>();
@@ -48,6 +56,8 @@ namespace RentFleet.API.Extensions
             services.AddAutoMapper(typeof(VeiculoProfile).Assembly);
             services.AddAutoMapper(typeof(DadosCaminhaoProfile).Assembly);
             services.AddAutoMapper(typeof(DadosMotoProfile).Assembly);
+            services.AddAutoMapper(typeof(DocumentoDigitalizadoProfile).Assembly);
+            services.AddAutoMapper(typeof(FotoVeiculoProfile).Assembly);
 
             // Registra FluentValidation
             services.AddValidatorsFromAssembly(typeof(Program).Assembly);
@@ -100,6 +110,18 @@ namespace RentFleet.API.Extensions
             services.AddTransient<IRequestHandler<UpdateDadosMotoCommand, Unit>, UpdateDadosMotoCommandHandler>();
             services.AddTransient<IRequestHandler<DeleteDadosMotoCommand, Unit>, DeleteDadosMotoCommandHandler>();
             services.AddTransient<IRequestHandler<GetDadosMotoByIdQuery, DadosMotoDTO>, GetDadosMotoByIdQueryHandler>();
+
+            services.AddTransient<IRequestHandler<CreateDocumentoDigitalizadoCommand, int>, CreateDocumentoDigitalizadoCommandHandler>();
+            services.AddTransient<IRequestHandler<UpdateDocumentoDigitalizadoCommand, Unit>, UpdateDocumentoDigitalizadoCommandHandler>();
+            services.AddTransient<IRequestHandler<DeleteDocumentoDigitalizadoCommand, Unit>, DeleteDocumentoDigitalizadoCommandHandler>();
+            services.AddTransient<IRequestHandler<GetDocumentoDigitalizadoByIdQuery, DocumentoDigitalizadoDTO>, GetDocumentoDigitalizadoByIdQueryHandler>();
+            services.AddTransient<IRequestHandler<GetDocumentoDigitalizadoByVeiculoIdQuery, List<DocumentoDigitalizadoDTO>>, GetDocumentoDigitalizadoByVeiculoIdQueryHandler>();
+
+            services.AddTransient<IRequestHandler<CreateFotoVeiculoCommand, int>, CreateFotoVeiculoCommandHandler>();
+            services.AddTransient<IRequestHandler<UpdateFotoVeiculoCommand, Unit>, UpdateFotoVeiculoCommandHandler>();
+            services.AddTransient<IRequestHandler<DeleteFotoVeiculoCommand, Unit>, DeleteFotoVeiculoCommandHandler>();
+            services.AddTransient<IRequestHandler<GetFotoVeiculoByIdQuery, FotoVeiculoDTO>, GetFotoVeiculoByIdQueryHandler>();
+            services.AddTransient<IRequestHandler<GetFotoVeiculoByVeiculoIdQuery, List<FotoVeiculoDTO>>, GetFotoVeiculoByVeiculoIdHandler>();
 
             return services;
         }
