@@ -27,6 +27,10 @@ using RentFleet.Application.Queries.DocumentoDigitalizado;
 using RentFleet.Application.Commands.FotoVeiculo;
 using RentFleet.Application.Handlers.FotoVeiculo;
 using RentFleet.Application.Queries.FotoVeiculo;
+using RentFleet.Domain.Entities;
+using RentFleet.Application.Commands.DadosLocalizacaoOperacao;
+using RentFleet.Application.Handlers.DadosLocalizacaoOperacao;
+using RentFleet.Application.Queries.DadosLocalizacaoOperacao;
 
 namespace RentFleet.API.Extensions
 {
@@ -42,6 +46,7 @@ namespace RentFleet.API.Extensions
             services.AddScoped<IDadosMotoRepository, DadosMotoRepository>();
             services.AddScoped<IDocumentoDigitalizadoRepository, DocumentoDigitalizadoRepository>();
             services.AddScoped<IFotoVeiculoRepository, FotoVeiculoRepository>();
+            services.AddScoped<IDadosLocalizacaoOperacaoRepository, DadosLocalizacaoOperacaoRepository>();
 
             // Registra serviços de infraestrutura
             services.AddScoped<PasswordHasher>();
@@ -58,6 +63,7 @@ namespace RentFleet.API.Extensions
             services.AddAutoMapper(typeof(DadosMotoProfile).Assembly);
             services.AddAutoMapper(typeof(DocumentoDigitalizadoProfile).Assembly);
             services.AddAutoMapper(typeof(FotoVeiculoProfile).Assembly);
+            services.AddAutoMapper(typeof(DadosLocalizacaoOperacao).Assembly);
 
             // Registra FluentValidation
             services.AddValidatorsFromAssembly(typeof(Program).Assembly);
@@ -122,6 +128,11 @@ namespace RentFleet.API.Extensions
             services.AddTransient<IRequestHandler<DeleteFotoVeiculoCommand, Unit>, DeleteFotoVeiculoCommandHandler>();
             services.AddTransient<IRequestHandler<GetFotoVeiculoByIdQuery, FotoVeiculoDTO>, GetFotoVeiculoByIdQueryHandler>();
             services.AddTransient<IRequestHandler<GetFotoVeiculoByVeiculoIdQuery, List<FotoVeiculoDTO>>, GetFotoVeiculoByVeiculoIdHandler>();
+
+            services.AddTransient<IRequestHandler<CreateDadosLocalizacaoOperacaoCommand, int>, CreateDadosLocalizacaoOperacaoCommandHandler>();
+            services.AddTransient<IRequestHandler<UpdateDadosLocalizacaoOperacaoCommand, Unit>, UpdateDadosLocalizacaoOperacaoCommandHandler>();
+            services.AddTransient<IRequestHandler<DeleteDadosLocalizacaoOperacaoCommand, Unit>, DeleteDadosLocalizacaoOperacaoCommandHandler>();
+            services.AddTransient<IRequestHandler<GetDadosLocalizacaoOperacaoByIdQuery, DadosLocalizacaoOperacaoDTO>, GetDadosLocalizacaoOperacaoByIdQueryHandler>();
 
             return services;
         }

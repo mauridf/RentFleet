@@ -10,7 +10,7 @@ namespace RentFleet.Infrastructure.Persistence.Configurations
         {
             builder.HasKey(d => d.Id);
             builder.Property(d => d.VeiculoId).IsRequired();
-            builder.Property(d => d.Descricao).IsRequired();
+            builder.Property(d => d.Descricao).HasMaxLength(500);
             builder.Property(d => d.UrlDocumento).IsRequired().HasMaxLength(200);
         }
     }

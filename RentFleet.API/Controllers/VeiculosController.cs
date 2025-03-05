@@ -2,12 +2,14 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using RentFleet.Application.Commands.DadosCaminhao;
+using RentFleet.Application.Commands.DadosLocalizacaoOperacao;
 using RentFleet.Application.Commands.DadosMoto;
 using RentFleet.Application.Commands.DocumentoDigitalizado;
 using RentFleet.Application.Commands.FotoVeiculo;
 using RentFleet.Application.Commands.Veiculo;
 using RentFleet.Application.DTOs;
 using RentFleet.Application.Queries.DadosCaminhao;
+using RentFleet.Application.Queries.DadosLocalizacaoOperacao;
 using RentFleet.Application.Queries.DadosMoto;
 using RentFleet.Application.Queries.DocumentoDigitalizado;
 using RentFleet.Application.Queries.FotoVeiculo;
@@ -136,6 +138,28 @@ namespace RentFleet.API.Controllers
             {
                 log.Error(ex, "Erro ao buscar foto do veiculo por ID: {Id}.", id);
                 return NotFound("Foto do veículo não encontrada.");
+            }
+        }
+
+        [HttpGet("busca-dados-localizacao-operacao/{id}")]
+        public async Task<ActionResult<DadosLocalizacaoOperacaoDTO>> GetDadosLocOperById(int id)
+        {
+            var log = Log.ForContext("DadosLocOper", id); // Adiciona contexto ao log
+
+            try
+            {
+                log.Information("Buscando dados de localização e operação por ID: {Id}.", id);
+
+                var query = new GetDadosLocalizacaoOperacaoByIdQuery { Id = id };
+                var dadosLocOper = await _mediator.Send(query);
+
+                log.Information("Dados de localização e operação {Id} encontrado com sucesso.", id);
+                return Ok(dadosLocOper);
+            }
+            catch (Exception ex)
+            {
+                log.Error(ex, "Erro ao buscar dados de localização e operação por ID: {Id}.", id);
+                return NotFound("Dados de localização e operação não encontrado.");
             }
         }
 
@@ -540,6 +564,33 @@ namespace RentFleet.API.Controllers
             }
         }
 
+        [HttpPost("registrar-dados-localizacao-operacao")]
+        [Authorize(Roles = "ADM,USR")]
+        public async Task<ActionResult<int>> CreateDadosLocOper([FromBody] CreateDadosLocalizacaoOperacaoCommand command)
+        {
+            if (command == null)
+            {
+                return BadRequest("O corpo da requisição não pode ser vazio.");
+            }
+
+            var log = Log.ForContext("Veiculo", command.VeiculoId);
+
+            try
+            {
+                log.Information("Registrando dados de localização e operação do veículo: {VeiculoId}.", command.VeiculoId);
+
+                var dadosLocOperId = await _mediator.Send(command);
+
+                log.Information("Dados de localização e operação do veículo {VeiculoId} registrados com sucesso. ID: {Id}.", command.VeiculoId, dadosLocOperId);
+                return Ok(dadosLocOperId);
+            }
+            catch (Exception ex)
+            {
+                log.Error(ex, "Erro ao registrar dados de localização e operação do veículo: {VeiculoId}.", command.VeiculoId);
+                return BadRequest("Erro ao registrar dados de localizaçao e operação.");
+            }
+        }
+
         [HttpPut("editar-veiculo")]
         [Authorize(Roles = "ADM,USR")]
         public async Task<ActionResult> Update([FromBody] UpdateVeiculoCommand command)
@@ -649,6 +700,29 @@ namespace RentFleet.API.Controllers
                 return BadRequest("Erro ao atualizar foto.");
             }
         }
+
+        [HttpPut("editar-dados-localizacao-operacao")]
+        [Authorize(Roles = "ADM,USR")]
+        public async Task<ActionResult> UpdateDadosLocOper([FromBody] UpdateDadosLocalizacaoOperacaoCommand command)
+        {
+            var log = Log.ForContext("DadosLocOper", command.Id); // Adiciona contexto ao log
+
+            try
+            {
+                log.Information("Atualizando os dados de localização e operação com ID: {Id}.", command.Id);
+
+                await _mediator.Send(command);
+
+                log.Information("Dados de localização e operação {Id} atualizado com sucesso.", command.Id);
+                return NoContent();
+            }
+            catch (Exception ex)
+            {
+                log.Error(ex, "Erro ao atualizar os dados de localização e operação com ID: {Id}.", command.Id);
+                return BadRequest("Erro ao atualizar os dados de localização e operação.");
+            }
+        }
+
         [HttpDelete("excluir-veículo/{id}")]
         [Authorize(Roles = "ADM,USR")]
         public async Task<ActionResult> Delete(int id)
@@ -761,6 +835,29 @@ namespace RentFleet.API.Controllers
             {
                 log.Error(ex, "Erro ao excluir foto com ID: {Id}.", id);
                 return BadRequest("Erro ao excluir foto.");
+            }
+        }
+
+        [HttpDelete("excluir-dados-localizacao-operacao/{id}")]
+        [Authorize(Roles = "ADM,USR")]
+        public async Task<ActionResult> DeleteDadosLocOper(int id)
+        {
+            var log = Log.ForContext("DadosLocOper", id); // Adiciona contexto ao log
+
+            try
+            {
+                log.Information("Excluindo os dados de localização e operação com ID: {Id}.", id);
+
+                var command = new DeleteDadosLocalizacaoOperacaoCommand { Id = id };
+                await _mediator.Send(command);
+
+                log.Information("Dados de localização e operação {Id} excluídos com sucesso.", id);
+                return NoContent();
+            }
+            catch (Exception ex)
+            {
+                log.Error(ex, "Erro ao excluir dados de localização e operação com ID: {Id}.", id);
+                return BadRequest("Erro ao excluir dados de localização e operação.");
             }
         }
     }
