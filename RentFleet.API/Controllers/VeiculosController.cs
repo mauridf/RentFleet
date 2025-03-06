@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using RentFleet.Application.Commands.DadosCaminhao;
 using RentFleet.Application.Commands.DadosLocalizacaoOperacao;
 using RentFleet.Application.Commands.DadosMoto;
+using RentFleet.Application.Commands.DadosSegurancaConformidade;
 using RentFleet.Application.Commands.DocumentoDigitalizado;
 using RentFleet.Application.Commands.FotoVeiculo;
 using RentFleet.Application.Commands.Veiculo;
@@ -11,10 +12,10 @@ using RentFleet.Application.DTOs;
 using RentFleet.Application.Queries.DadosCaminhao;
 using RentFleet.Application.Queries.DadosLocalizacaoOperacao;
 using RentFleet.Application.Queries.DadosMoto;
+using RentFleet.Application.Queries.DadosSegurancaConformidade;
 using RentFleet.Application.Queries.DocumentoDigitalizado;
 using RentFleet.Application.Queries.FotoVeiculo;
 using RentFleet.Application.Queries.Veiculo;
-using RentFleet.Domain.Entities;
 using Serilog;
 
 namespace RentFleet.API.Controllers
@@ -141,7 +142,29 @@ namespace RentFleet.API.Controllers
             }
         }
 
-        [HttpGet("busca-dados-localizacao-operacao/{id}")]
+        [HttpGet("busca-dados-localizacao-operacao-do-veiculo/{veiculoId}")]
+        public async Task<ActionResult<DadosLocalizacaoOperacaoDTO>> GetDadosLocOperByVeiculoId(int veiculoId)
+        {
+            var log = Log.ForContext("DadosLocOper", veiculoId); // Adiciona contexto ao log
+
+            try
+            {
+                log.Information("Buscando dados de localização e operação por ID: {Id}.", veiculoId);
+
+                var query = new GetDadosLocalizacaoOperacaoByVeiculoIdQuery { VeiculoId = veiculoId };
+                var dadosLocOper = await _mediator.Send(query);
+
+                log.Information("Dados de localização e operação {Id} encontrado com sucesso.", veiculoId);
+                return Ok(dadosLocOper);
+            }
+            catch (Exception ex)
+            {
+                log.Error(ex, "Erro ao buscar dados de localização e operação por ID: {Id}.", veiculoId);
+                return NotFound("Dados de localização e operação não encontrado.");
+            }
+        }
+
+        [HttpGet("busca-dados-localizacao-operacao-por-id/{id}")]
         public async Task<ActionResult<DadosLocalizacaoOperacaoDTO>> GetDadosLocOperById(int id)
         {
             var log = Log.ForContext("DadosLocOper", id); // Adiciona contexto ao log
@@ -160,6 +183,50 @@ namespace RentFleet.API.Controllers
             {
                 log.Error(ex, "Erro ao buscar dados de localização e operação por ID: {Id}.", id);
                 return NotFound("Dados de localização e operação não encontrado.");
+            }
+        }
+
+        [HttpGet("busca-dados-seguranca-conformidade-do-veiculo/{veiculoId}")]
+        public async Task<ActionResult<DadosSegurancaConformidadeDTO>> GetDadosSegConfByVeiculoId(int veiculoId)
+        {
+            var log = Log.ForContext("SegurancaConformidade", veiculoId); // Adiciona contexto ao log
+
+            try
+            {
+                log.Information("Buscando dados de segurança e conformidade por ID: {Id}.", veiculoId);
+
+                var query = new GetDadosSegurancaConformidadeByVeiculoIdQuery { VeiculoId = veiculoId };
+                var segurancaConformidade = await _mediator.Send(query);
+
+                log.Information("Dados de segurança e conformidade {Id} encontrado com sucesso.", veiculoId);
+                return Ok(segurancaConformidade);
+            }
+            catch (Exception ex)
+            {
+                log.Error(ex, "Erro ao buscar dados de segurança e conformidade por ID: {Id}.", veiculoId);
+                return NotFound("Dados de segurança e conformidade não encontrado.");
+            }
+        }
+
+        [HttpGet("busca-dados-seguranca-conformidade-por-id/{id}")]
+        public async Task<ActionResult<DadosSegurancaConformidadeDTO>> GetDadosSegConfById(int id)
+        {
+            var log = Log.ForContext("SegurancaConformidade", id); // Adiciona contexto ao log
+
+            try
+            {
+                log.Information("Buscando dados de segurança e conformidade por ID: {Id}.", id);
+
+                var query = new GetDadosSegurancaConformidadeByIdQuery { Id = id };
+                var segurancaConformidade = await _mediator.Send(query);
+
+                log.Information("Dados de segurança e conformidade {Id} encontrado com sucesso.", id);
+                return Ok(segurancaConformidade);
+            }
+            catch (Exception ex)
+            {
+                log.Error(ex, "Erro ao buscar dados de segurança e conformidade por ID: {Id}.", id);
+                return NotFound("Dados de segurança e conformidade não encontrado.");
             }
         }
 
@@ -591,6 +658,33 @@ namespace RentFleet.API.Controllers
             }
         }
 
+        [HttpPost("registrar-dados-seguranca-conformidade")]
+        [Authorize(Roles = "ADM,USR")]
+        public async Task<ActionResult<int>> CreateDadosSegConf([FromBody] CreateDadosSegurancaConformidadeCommand command)
+        {
+            if (command == null)
+            {
+                return BadRequest("O corpo da requisição não pode ser vazio.");
+            }
+
+            var log = Log.ForContext("Veiculo", command.VeiculoId);
+
+            try
+            {
+                log.Information("Registrando dados de segurança e conformidade do veículo: {VeiculoId}.", command.VeiculoId);
+
+                var segurancaConformidadeId = await _mediator.Send(command);
+
+                log.Information("Dados de segurança e conformidade do veículo {VeiculoId} registrados com sucesso. ID: {Id}.", command.VeiculoId, segurancaConformidadeId);
+                return Ok(segurancaConformidadeId);
+            }
+            catch (Exception ex)
+            {
+                log.Error(ex, "Erro ao registrar dados de segurança e conformidade do veículo: {VeiculoId}.", command.VeiculoId);
+                return BadRequest("Erro ao registrar dados de localizaçao e operação.");
+            }
+        }
+
         [HttpPut("editar-veiculo")]
         [Authorize(Roles = "ADM,USR")]
         public async Task<ActionResult> Update([FromBody] UpdateVeiculoCommand command)
@@ -720,6 +814,28 @@ namespace RentFleet.API.Controllers
             {
                 log.Error(ex, "Erro ao atualizar os dados de localização e operação com ID: {Id}.", command.Id);
                 return BadRequest("Erro ao atualizar os dados de localização e operação.");
+            }
+        }
+
+        [HttpPut("editar-dados-seguranca-conformidade")]
+        [Authorize(Roles = "ADM,USR")]
+        public async Task<ActionResult> UpdateDadosSegConf([FromBody] UpdateDadosSegurancaConformidadeCommand command)
+        {
+            var log = Log.ForContext("SegurancaConformidade", command.Id); // Adiciona contexto ao log
+
+            try
+            {
+                log.Information("Atualizando os dados de segurança e conformidade com ID: {Id}.", command.Id);
+
+                await _mediator.Send(command);
+
+                log.Information("Dados de segurança e conformidade {Id} atualizado com sucesso.", command.Id);
+                return NoContent();
+            }
+            catch (Exception ex)
+            {
+                log.Error(ex, "Erro ao atualizar os dados de segurança e conformidade com ID: {Id}.", command.Id);
+                return BadRequest("Erro ao atualizar os dados de segurança e conformidade.");
             }
         }
 
@@ -858,6 +974,29 @@ namespace RentFleet.API.Controllers
             {
                 log.Error(ex, "Erro ao excluir dados de localização e operação com ID: {Id}.", id);
                 return BadRequest("Erro ao excluir dados de localização e operação.");
+            }
+        }
+
+        [HttpDelete("excluir-dados-seguranca-conformidade/{id}")]
+        [Authorize(Roles = "ADM,USR")]
+        public async Task<ActionResult> DeleteDadosSegConf(int id)
+        {
+            var log = Log.ForContext("SegurancaConformidade", id); // Adiciona contexto ao log
+
+            try
+            {
+                log.Information("Excluindo os dados de segurança e conformidade com ID: {Id}.", id);
+
+                var command = new DeleteDadosSegurancaConformidadeCommand { Id = id };
+                await _mediator.Send(command);
+
+                log.Information("Dados de segurança e conformidade {Id} excluídos com sucesso.", id);
+                return NoContent();
+            }
+            catch (Exception ex)
+            {
+                log.Error(ex, "Erro ao excluir dados de segurança e conformidade com ID: {Id}.", id);
+                return BadRequest("Erro ao excluir dados de segurança e conformidade.");
             }
         }
     }

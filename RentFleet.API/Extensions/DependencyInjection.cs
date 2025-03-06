@@ -31,6 +31,9 @@ using RentFleet.Domain.Entities;
 using RentFleet.Application.Commands.DadosLocalizacaoOperacao;
 using RentFleet.Application.Handlers.DadosLocalizacaoOperacao;
 using RentFleet.Application.Queries.DadosLocalizacaoOperacao;
+using RentFleet.Application.Commands.DadosSegurancaConformidade;
+using RentFleet.Application.Handlers.DadosSegurancaConformidade;
+using RentFleet.Application.Queries.DadosSegurancaConformidade;
 
 namespace RentFleet.API.Extensions
 {
@@ -47,6 +50,7 @@ namespace RentFleet.API.Extensions
             services.AddScoped<IDocumentoDigitalizadoRepository, DocumentoDigitalizadoRepository>();
             services.AddScoped<IFotoVeiculoRepository, FotoVeiculoRepository>();
             services.AddScoped<IDadosLocalizacaoOperacaoRepository, DadosLocalizacaoOperacaoRepository>();
+            services.AddScoped<IDadosSegurancaConformidadeRepository, DadosSegurancaConformidadeRepository>();
 
             // Registra serviços de infraestrutura
             services.AddScoped<PasswordHasher>();
@@ -63,7 +67,8 @@ namespace RentFleet.API.Extensions
             services.AddAutoMapper(typeof(DadosMotoProfile).Assembly);
             services.AddAutoMapper(typeof(DocumentoDigitalizadoProfile).Assembly);
             services.AddAutoMapper(typeof(FotoVeiculoProfile).Assembly);
-            services.AddAutoMapper(typeof(DadosLocalizacaoOperacao).Assembly);
+            services.AddAutoMapper(typeof(DadosLocalizacaoOperacaoProfile).Assembly);
+            services.AddAutoMapper(typeof(DadosSegurancaConformidadeProfile).Assembly);
 
             // Registra FluentValidation
             services.AddValidatorsFromAssembly(typeof(Program).Assembly);
@@ -132,7 +137,14 @@ namespace RentFleet.API.Extensions
             services.AddTransient<IRequestHandler<CreateDadosLocalizacaoOperacaoCommand, int>, CreateDadosLocalizacaoOperacaoCommandHandler>();
             services.AddTransient<IRequestHandler<UpdateDadosLocalizacaoOperacaoCommand, Unit>, UpdateDadosLocalizacaoOperacaoCommandHandler>();
             services.AddTransient<IRequestHandler<DeleteDadosLocalizacaoOperacaoCommand, Unit>, DeleteDadosLocalizacaoOperacaoCommandHandler>();
+            services.AddTransient<IRequestHandler<GetDadosLocalizacaoOperacaoByVeiculoIdQuery, DadosLocalizacaoOperacaoDTO>, GetDadosLocalizacaoOperacaoByVeiculoIdQueryHandler>();
             services.AddTransient<IRequestHandler<GetDadosLocalizacaoOperacaoByIdQuery, DadosLocalizacaoOperacaoDTO>, GetDadosLocalizacaoOperacaoByIdQueryHandler>();
+
+            services.AddTransient<IRequestHandler<CreateDadosSegurancaConformidadeCommand, int>, CreateDadosSegurancaConformidadeCommandHandler>();
+            services.AddTransient<IRequestHandler<UpdateDadosSegurancaConformidadeCommand, Unit>, UpdateDadosSegurancaConformidadeCommandHandler>();
+            services.AddTransient<IRequestHandler<DeleteDadosSegurancaConformidadeCommand, Unit>, DeleteDadosSegurancaConformidadeCommandHandler>();
+            services.AddTransient<IRequestHandler<GetDadosSegurancaConformidadeByVeiculoIdQuery, DadosSegurancaConformidadeDTO>, GetDadosSegurancaConformidadeByVeiculoIdQueryHandler>();
+            services.AddTransient<IRequestHandler<GetDadosSegurancaConformidadeByIdQuery, DadosSegurancaConformidadeDTO>, GetDadosSegurancaConformidadeByIdQueryHandler>();
 
             return services;
         }
