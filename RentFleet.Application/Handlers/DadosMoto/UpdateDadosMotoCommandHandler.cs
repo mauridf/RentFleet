@@ -6,7 +6,7 @@ using Serilog;
 
 namespace RentFleet.Application.Handlers.DadosMoto
 {
-    public class UpdateDadosMotoCommandHandler : IRequestHandler<UpdateDadosMotoCommand>
+    public class UpdateDadosMotoCommandHandler : IRequestHandler<UpdateDadosMotoCommand, Unit>
     {
         private readonly IDadosMotoRepository _dadosMotoRepository;
 

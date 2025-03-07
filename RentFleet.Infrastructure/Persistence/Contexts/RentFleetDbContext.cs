@@ -36,6 +36,7 @@ namespace RentFleet.Infrastructure.Persistence.Contexts
             modelBuilder.ApplyConfiguration(new FotoVeiculoConfiguration());
             modelBuilder.ApplyConfiguration(new DadosLocalizacaoOperacaoConfiguration());
             modelBuilder.ApplyConfiguration(new DadosSegurancaConformidadeConfiguration());
+            modelBuilder.ApplyConfiguration(new DadosTecnicosVeiculoConfiguration());
 
             // Relacionamentos
             modelBuilder.Entity<DadosTecnicosVeiculo>()

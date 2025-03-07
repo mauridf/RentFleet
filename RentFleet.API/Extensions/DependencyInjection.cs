@@ -34,6 +34,9 @@ using RentFleet.Application.Queries.DadosLocalizacaoOperacao;
 using RentFleet.Application.Commands.DadosSegurancaConformidade;
 using RentFleet.Application.Handlers.DadosSegurancaConformidade;
 using RentFleet.Application.Queries.DadosSegurancaConformidade;
+using RentFleet.Application.Commands.DadosTecnicosVeiculo;
+using RentFleet.Application.Handlers.DadosTecnicosVeiculo;
+using RentFleet.Application.Queries.DadosTecnicosVeiculo;
 
 namespace RentFleet.API.Extensions
 {
@@ -51,6 +54,7 @@ namespace RentFleet.API.Extensions
             services.AddScoped<IFotoVeiculoRepository, FotoVeiculoRepository>();
             services.AddScoped<IDadosLocalizacaoOperacaoRepository, DadosLocalizacaoOperacaoRepository>();
             services.AddScoped<IDadosSegurancaConformidadeRepository, DadosSegurancaConformidadeRepository>();
+            services.AddScoped<IDadosTecnicosVeiculoRepository, DadosTecnicosVeiculoRepository>();
 
             // Registra serviços de infraestrutura
             services.AddScoped<PasswordHasher>();
@@ -69,6 +73,7 @@ namespace RentFleet.API.Extensions
             services.AddAutoMapper(typeof(FotoVeiculoProfile).Assembly);
             services.AddAutoMapper(typeof(DadosLocalizacaoOperacaoProfile).Assembly);
             services.AddAutoMapper(typeof(DadosSegurancaConformidadeProfile).Assembly);
+            services.AddAutoMapper(typeof(DadosTecnicosVeiculoProfile).Assembly);
 
             // Registra FluentValidation
             services.AddValidatorsFromAssembly(typeof(Program).Assembly);
@@ -147,6 +152,12 @@ namespace RentFleet.API.Extensions
             services.AddTransient<IRequestHandler<DeleteDadosSegurancaConformidadeCommand, Unit>, DeleteDadosSegurancaConformidadeCommandHandler>();
             services.AddTransient<IRequestHandler<GetDadosSegurancaConformidadeByVeiculoIdQuery, DadosSegurancaConformidadeDTO>, GetDadosSegurancaConformidadeByVeiculoIdQueryHandler>();
             services.AddTransient<IRequestHandler<GetDadosSegurancaConformidadeByIdQuery, DadosSegurancaConformidadeDTO>, GetDadosSegurancaConformidadeByIdQueryHandler>();
+
+            services.AddTransient<IRequestHandler<CreateDadosTecnicosVeiculoCommand, int>, CreateDadosTecnicosVeiculoCommandHandler>();
+            services.AddTransient<IRequestHandler<UpdateDadosTecnicosVeiculoCommand, Unit>, UpdateDadosTecnicosVeiculoCommandHandler>();
+            services.AddTransient<IRequestHandler<DeleteDadosTecnicosVeiculoCommand, Unit>, DeleteDadosTecnicosVeiculoCommandHandler>();
+            services.AddTransient<IRequestHandler<GetDadosTecnicosVeiculoByVeiculoIdQuery, DadosTecnicosVeiculoDTO>, GetDadosTecnicosVeiculoByVeiculoIdQueryHandler>();
+            services.AddTransient<IRequestHandler<GetDadosTecnicosVeiculoByIdQuery, DadosTecnicosVeiculoDTO>, GetDadosTecnicosVeiculoByIdQueryHandler>();
 
             return services;
         }
