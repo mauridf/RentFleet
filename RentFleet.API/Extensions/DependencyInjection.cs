@@ -116,11 +116,13 @@ namespace RentFleet.API.Extensions
             services.AddTransient<IRequestHandler<UpdateDadosCaminhaoCommand, Unit>, UpdateDadosCaminhaoCommandHandler>();
             services.AddTransient<IRequestHandler<DeleteDadosCaminhaoCommand, Unit>, DeleteDadosCaminhaoCommandHandler>();
             services.AddTransient<IRequestHandler<GetDadosCaminhaoByIdQuery, DadosCaminhaoDTO>, GetDadosCaminhaoByIdQueryHandler>();
+            services.AddTransient<IRequestHandler<GetDadosCaminhaoByVeiculoIdQuery, DadosCaminhaoDTO>, GetDadosCaminhaoByVeiculoIdQueryHandler>();
 
             services.AddTransient<IRequestHandler<CreateDadosMotoCommand, int>, CreateDadosMotoCommandHandler>();
             services.AddTransient<IRequestHandler<UpdateDadosMotoCommand, Unit>, UpdateDadosMotoCommandHandler>();
             services.AddTransient<IRequestHandler<DeleteDadosMotoCommand, Unit>, DeleteDadosMotoCommandHandler>();
             services.AddTransient<IRequestHandler<GetDadosMotoByIdQuery, DadosMotoDTO>, GetDadosMotoByIdQueryHandler>();
+            services.AddTransient<IRequestHandler<GetDadosMotoByVeiculoIdQuery, DadosMotoDTO>, GetDadosMotoByVeiculoIdQueryHandler>();
 
             services.AddTransient<IRequestHandler<CreateDocumentoDigitalizadoCommand, int>, CreateDocumentoDigitalizadoCommandHandler>();
             services.AddTransient<IRequestHandler<UpdateDocumentoDigitalizadoCommand, Unit>, UpdateDocumentoDigitalizadoCommandHandler>();

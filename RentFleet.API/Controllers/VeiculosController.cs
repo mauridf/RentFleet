@@ -76,6 +76,28 @@ namespace RentFleet.API.Controllers
             }
         }
 
+        [HttpGet("busca-dados-caminhao/{veiculoId}")]
+        public async Task<ActionResult<DadosCaminhaoDTO>> GetDadosCaminhaoByVeiculoId(int veiculoId)
+        {
+            var log = Log.ForContext("DadosCaminhaoId", veiculoId); // Adiciona contexto ao log
+
+            try
+            {
+                log.Information("Buscando dados do caminhão por ID: {DadosCaminhaoId}.", veiculoId);
+
+                var query = new GetDadosCaminhaoByVeiculoIdQuery { VeiculoId = veiculoId };
+                var dadosCaminhao = await _mediator.Send(query);
+
+                log.Information("Dados do Caminhão {DadosCaminhaoId} encontrado com sucesso.", veiculoId);
+                return Ok(dadosCaminhao);
+            }
+            catch (Exception ex)
+            {
+                log.Error(ex, "Erro ao buscar dados do Caminhão por ID: {DadosCaminhaoId}.", veiculoId);
+                return NotFound("Dados do Caminhão não encontrado.");
+            }
+        }
+
         [HttpGet("busca-dados-moto-por-id/{id}")]
         public async Task<ActionResult<DadosMotoDTO>> GetDadosMotoById(int id)
         {
@@ -94,6 +116,28 @@ namespace RentFleet.API.Controllers
             catch (Exception ex)
             {
                 log.Error(ex, "Erro ao buscar dados da Moto por ID: {DadosMotoId}.", id);
+                return NotFound("Dados da Moto não encontrado.");
+            }
+        }
+
+        [HttpGet("busca-dados-moto/{veiculoId}")]
+        public async Task<ActionResult<DadosMotoDTO>> GetDadosMotoByVeiculoId(int veiculoId)
+        {
+            var log = Log.ForContext("DadosMotoId", veiculoId); // Adiciona contexto ao log
+
+            try
+            {
+                log.Information("Buscando dados da moto por ID: {DadosMotoId}.", veiculoId);
+
+                var query = new GetDadosMotoByVeiculoIdQuery { VeiculoId = veiculoId };
+                var dadosMoto = await _mediator.Send(query);
+
+                log.Information("Dados da Moto {DadosMotoId} encontrado com sucesso.", veiculoId);
+                return Ok(dadosMoto);
+            }
+            catch (Exception ex)
+            {
+                log.Error(ex, "Erro ao buscar dados da Moto por ID: {DadosMotoId}.", veiculoId);
                 return NotFound("Dados da Moto não encontrado.");
             }
         }

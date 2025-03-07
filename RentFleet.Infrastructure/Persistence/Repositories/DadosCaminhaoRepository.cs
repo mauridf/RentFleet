@@ -1,4 +1,5 @@
-﻿using RentFleet.Domain.Entities;
+﻿using Microsoft.EntityFrameworkCore;
+using RentFleet.Domain.Entities;
 using RentFleet.Domain.Interfaces;
 using RentFleet.Infrastructure.Persistence.Contexts;
 
@@ -32,6 +33,11 @@ namespace RentFleet.Infrastructure.Persistence.Repositories
         public async Task<DadosCaminhao> GetByIdAsync(int id)
         {
             return await _context.DadosCaminhoes.FindAsync(id);
+        }
+
+        public async Task<DadosCaminhao> GetByVeiculoIdAsync(int veiculoId)
+        {
+            return await _context.DadosCaminhoes.FirstOrDefaultAsync(c => c.VeiculoId == veiculoId);
         }
 
         public async Task UpdateAsync(DadosCaminhao dadosCaminhao)
