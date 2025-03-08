@@ -118,7 +118,8 @@
     public enum TipoManutencao
     {
         Preventiva,
-        Corretiva
+        Corretiva,
+        Revisao
     }
 
     public enum StatusReserva
