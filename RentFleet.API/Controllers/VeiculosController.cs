@@ -36,7 +36,7 @@ namespace RentFleet.API.Controllers
             _mediator = mediator;
         }
 
-        [HttpGet("busca-veiculo-por-id/{id}")]
+        [HttpGet("busca-por-id/{id}")]
         public async Task<ActionResult<VeiculoDTO>> GetById(int id)
         {
             var log = Log.ForContext("VeiculoId", id); // Adiciona contexto ao log
@@ -58,293 +58,7 @@ namespace RentFleet.API.Controllers
             }
         }
 
-        [HttpGet("busca-dados-caminhao-por-id/{id}")]
-        public async Task<ActionResult<DadosCaminhaoDTO>> GetDadosCaminhaoById(int id)
-        {
-            var log = Log.ForContext("DadosCaminhaoId", id); // Adiciona contexto ao log
-
-            try
-            {
-                log.Information("Buscando dados do caminhão por ID: {DadosCaminhaoId}.", id);
-
-                var query = new GetDadosCaminhaoByIdQuery { Id = id };
-                var dadosCaminhao = await _mediator.Send(query);
-
-                log.Information("Dados do Caminhão {DadosCaminhaoId} encontrado com sucesso.", id);
-                return Ok(dadosCaminhao);
-            }
-            catch (Exception ex)
-            {
-                log.Error(ex, "Erro ao buscar dados do Caminhão por ID: {DadosCaminhaoId}.", id);
-                return NotFound("Dados do Caminhão não encontrado.");
-            }
-        }
-
-        [HttpGet("busca-dados-caminhao/{veiculoId}")]
-        public async Task<ActionResult<DadosCaminhaoDTO>> GetDadosCaminhaoByVeiculoId(int veiculoId)
-        {
-            var log = Log.ForContext("DadosCaminhaoId", veiculoId); // Adiciona contexto ao log
-
-            try
-            {
-                log.Information("Buscando dados do caminhão por ID: {DadosCaminhaoId}.", veiculoId);
-
-                var query = new GetDadosCaminhaoByVeiculoIdQuery { VeiculoId = veiculoId };
-                var dadosCaminhao = await _mediator.Send(query);
-
-                log.Information("Dados do Caminhão {DadosCaminhaoId} encontrado com sucesso.", veiculoId);
-                return Ok(dadosCaminhao);
-            }
-            catch (Exception ex)
-            {
-                log.Error(ex, "Erro ao buscar dados do Caminhão por ID: {DadosCaminhaoId}.", veiculoId);
-                return NotFound("Dados do Caminhão não encontrado.");
-            }
-        }
-
-        [HttpGet("busca-dados-moto-por-id/{id}")]
-        public async Task<ActionResult<DadosMotoDTO>> GetDadosMotoById(int id)
-        {
-            var log = Log.ForContext("DadosMotoId", id); // Adiciona contexto ao log
-
-            try
-            {
-                log.Information("Buscando dados da moto por ID: {DadosMotoId}.", id);
-
-                var query = new GetDadosMotoByIdQuery { Id = id };
-                var dadosMoto = await _mediator.Send(query);
-
-                log.Information("Dados da Moto {DadosMotoId} encontrado com sucesso.", id);
-                return Ok(dadosMoto);
-            }
-            catch (Exception ex)
-            {
-                log.Error(ex, "Erro ao buscar dados da Moto por ID: {DadosMotoId}.", id);
-                return NotFound("Dados da Moto não encontrado.");
-            }
-        }
-
-        [HttpGet("busca-dados-moto/{veiculoId}")]
-        public async Task<ActionResult<DadosMotoDTO>> GetDadosMotoByVeiculoId(int veiculoId)
-        {
-            var log = Log.ForContext("DadosMotoId", veiculoId); // Adiciona contexto ao log
-
-            try
-            {
-                log.Information("Buscando dados da moto por ID: {DadosMotoId}.", veiculoId);
-
-                var query = new GetDadosMotoByVeiculoIdQuery { VeiculoId = veiculoId };
-                var dadosMoto = await _mediator.Send(query);
-
-                log.Information("Dados da Moto {DadosMotoId} encontrado com sucesso.", veiculoId);
-                return Ok(dadosMoto);
-            }
-            catch (Exception ex)
-            {
-                log.Error(ex, "Erro ao buscar dados da Moto por ID: {DadosMotoId}.", veiculoId);
-                return NotFound("Dados da Moto não encontrado.");
-            }
-        }
-
-        [HttpGet("busca-documento-veiculo/{id}")]
-        public async Task<ActionResult<DocumentoDigitalizadoDTO>> GetDocumentoById(int id)
-        {
-            var log = Log.ForContext("Documento", id); // Adiciona contexto ao log
-
-            try
-            {
-                log.Information("Buscando o documento do veículo por ID: {Documento}.", id);
-
-                var query = new GetDocumentoDigitalizadoByIdQuery { Id = id };
-                var documento = await _mediator.Send(query);
-
-                log.Information("Documento do veículo {Id} encontrado com sucesso.", id);
-                return Ok(documento);
-            }
-            catch (Exception ex)
-            {
-                log.Error(ex, "Erro ao buscar documento do veiculo por ID: {Id}.", id);
-                return NotFound("Documento do veículo não encontrado.");
-            }
-        }
-
-        [HttpGet("busca-foto-veiculo/{id}")]
-        public async Task<ActionResult<FotoVeiculoDTO>> GetFotoById(int id)
-        {
-            var log = Log.ForContext("Foto", id); // Adiciona contexto ao log
-
-            try
-            {
-                log.Information("Buscando a foto do veículo por ID: {Foto}.", id);
-
-                var query = new GetFotoVeiculoByIdQuery { Id = id };
-                var foto = await _mediator.Send(query);
-
-                log.Information("Foto do veículo {Id} encontrada com sucesso.", id);
-                return Ok(foto);
-            }
-            catch (Exception ex)
-            {
-                log.Error(ex, "Erro ao buscar foto do veiculo por ID: {Id}.", id);
-                return NotFound("Foto do veículo não encontrada.");
-            }
-        }
-
-        [HttpGet("busca-dados-localizacao-operacao-do-veiculo/{veiculoId}")]
-        public async Task<ActionResult<DadosLocalizacaoOperacaoDTO>> GetDadosLocOperByVeiculoId(int veiculoId)
-        {
-            var log = Log.ForContext("DadosLocOper", veiculoId); // Adiciona contexto ao log
-
-            try
-            {
-                log.Information("Buscando dados de localização e operação por ID: {Id}.", veiculoId);
-
-                var query = new GetDadosLocalizacaoOperacaoByVeiculoIdQuery { VeiculoId = veiculoId };
-                var dadosLocOper = await _mediator.Send(query);
-
-                log.Information("Dados de localização e operação {Id} encontrado com sucesso.", veiculoId);
-                return Ok(dadosLocOper);
-            }
-            catch (Exception ex)
-            {
-                log.Error(ex, "Erro ao buscar dados de localização e operação por ID: {Id}.", veiculoId);
-                return NotFound("Dados de localização e operação não encontrado.");
-            }
-        }
-
-        [HttpGet("busca-dados-localizacao-operacao-por-id/{id}")]
-        public async Task<ActionResult<DadosLocalizacaoOperacaoDTO>> GetDadosLocOperById(int id)
-        {
-            var log = Log.ForContext("DadosLocOper", id); // Adiciona contexto ao log
-
-            try
-            {
-                log.Information("Buscando dados de localização e operação por ID: {Id}.", id);
-
-                var query = new GetDadosLocalizacaoOperacaoByIdQuery { Id = id };
-                var dadosLocOper = await _mediator.Send(query);
-
-                log.Information("Dados de localização e operação {Id} encontrado com sucesso.", id);
-                return Ok(dadosLocOper);
-            }
-            catch (Exception ex)
-            {
-                log.Error(ex, "Erro ao buscar dados de localização e operação por ID: {Id}.", id);
-                return NotFound("Dados de localização e operação não encontrado.");
-            }
-        }
-
-        [HttpGet("busca-dados-seguranca-conformidade-do-veiculo/{veiculoId}")]
-        public async Task<ActionResult<DadosSegurancaConformidadeDTO>> GetDadosSegConfByVeiculoId(int veiculoId)
-        {
-            var log = Log.ForContext("SegurancaConformidade", veiculoId); // Adiciona contexto ao log
-
-            try
-            {
-                log.Information("Buscando dados de segurança e conformidade por ID: {Id}.", veiculoId);
-
-                var query = new GetDadosSegurancaConformidadeByVeiculoIdQuery { VeiculoId = veiculoId };
-                var segurancaConformidade = await _mediator.Send(query);
-
-                log.Information("Dados de segurança e conformidade {Id} encontrado com sucesso.", veiculoId);
-                return Ok(segurancaConformidade);
-            }
-            catch (Exception ex)
-            {
-                log.Error(ex, "Erro ao buscar dados de segurança e conformidade por ID: {Id}.", veiculoId);
-                return NotFound("Dados de segurança e conformidade não encontrado.");
-            }
-        }
-
-        [HttpGet("busca-dados-seguranca-conformidade-por-id/{id}")]
-        public async Task<ActionResult<DadosSegurancaConformidadeDTO>> GetDadosSegConfById(int id)
-        {
-            var log = Log.ForContext("SegurancaConformidade", id); // Adiciona contexto ao log
-
-            try
-            {
-                log.Information("Buscando dados de segurança e conformidade por ID: {Id}.", id);
-
-                var query = new GetDadosSegurancaConformidadeByIdQuery { Id = id };
-                var segurancaConformidade = await _mediator.Send(query);
-
-                log.Information("Dados de segurança e conformidade {Id} encontrado com sucesso.", id);
-                return Ok(segurancaConformidade);
-            }
-            catch (Exception ex)
-            {
-                log.Error(ex, "Erro ao buscar dados de segurança e conformidade por ID: {Id}.", id);
-                return NotFound("Dados de segurança e conformidade não encontrado.");
-            }
-        }
-
-        [HttpGet("busca-dados-tecnicos-do-veiculo/{veiculoId}")]
-        public async Task<ActionResult<DadosTecnicosVeiculoDTO>> GetDadosTecnicosByVeiculoId(int veiculoId)
-        {
-            var log = Log.ForContext("DadosTecnicos", veiculoId); // Adiciona contexto ao log
-
-            try
-            {
-                log.Information("Buscando dados tecnicos do Veículo ID: {VeiculoId}.", veiculoId);
-
-                var query = new GetDadosTecnicosVeiculoByVeiculoIdQuery { VeiculoId = veiculoId };
-                var tecnico = await _mediator.Send(query);
-
-                log.Information("Dados tecnicos do veículo {VeiculoId} encontrado com sucesso.", veiculoId);
-                return Ok(tecnico);
-            }
-            catch (Exception ex)
-            {
-                log.Error(ex, "Erro ao buscar dados tecnicos do veículo ID: {VeiculoId}.", veiculoId);
-                return NotFound("Dados tecnicos do veículo não encontrado.");
-            }
-        }
-
-        [HttpGet("busca-dados-tecnicos-por-id/{id}")]
-        public async Task<ActionResult<DadosTecnicosVeiculoDTO>> GetDadosTecnicosById(int id)
-        {
-            var log = Log.ForContext("DadosTecnicos", id); // Adiciona contexto ao log
-
-            try
-            {
-                log.Information("Buscando dados tecnicos ID: {Id}.", id);
-
-                var query = new GetDadosTecnicosVeiculoByIdQuery { Id = id };
-                var tecnico = await _mediator.Send(query);
-
-                log.Information("Dados tecnicos {Id} encontrado com sucesso.", id);
-                return Ok(tecnico);
-            }
-            catch (Exception ex)
-            {
-                log.Error(ex, "Erro ao buscar dados tecnicos ID: {Id}.", id);
-                return NotFound("Dados tecnicos não encontrados.");
-            }
-        }
-
-        [HttpGet("informacao-manutencao-veiculo/{id}")]
-        public async Task<ActionResult<ManutencaoVeiculoDTO>> GetManutencaoVeiculoById(int id)
-        {
-            var log = Log.ForContext("ManutencaoVeiculo", id); // Adiciona contexto ao log
-
-            try
-            {
-                log.Information("Buscando informação de manutenção ID: {Id}.", id);
-
-                var query = new GetManutencaoVeiculoByIdQuery { Id = id };
-                var manutencao = await _mediator.Send(query);
-
-                log.Information("Informação de Manutenção de Veículo {Id} encontrada com sucesso.", id);
-                return Ok(manutencao);
-            }
-            catch (Exception ex)
-            {
-                log.Error(ex, "Erro ao buscar informação de manutenção ID: {Id}.", id);
-                return NotFound("informação de manutenção não encontrados.");
-            }
-        }
-
-        [HttpGet("busca-veiculo-por-placa/{placa}")]
+        [HttpGet("busca-por-placa/{placa}")]
         [Authorize(Roles = "ADM,USR")]
         public async Task<ActionResult<VeiculoDTO>> GetByPlaca(string placa)
         {
@@ -367,7 +81,7 @@ namespace RentFleet.API.Controllers
             }
         }
 
-        [HttpGet("busca-veiculo-por-chassi/{chassi}")]
+        [HttpGet("busca-por-chassi/{chassi}")]
         [Authorize(Roles = "ADM,USR")]
         public async Task<ActionResult<VeiculoDTO>> GetByChassi(string chassi)
         {
@@ -390,7 +104,7 @@ namespace RentFleet.API.Controllers
             }
         }
 
-        [HttpGet("todos-veiculos")]
+        [HttpGet("listar-todos")]
         public async Task<ActionResult<IEnumerable<VeiculoDTO>>> GetAll()
         {
             try
@@ -410,47 +124,7 @@ namespace RentFleet.API.Controllers
             }
         }
 
-        [HttpGet("documentos-do-veiculo/{veiculoId}")]
-        public async Task<ActionResult<IEnumerable<DocumentoDigitalizadoDTO>>> GetDocumentoDigitalizadoByVeiculoId(int veiculoId)
-        {
-            try
-            {
-                Log.Information("Buscando todos os documentos do veículo.");
-
-                var query = new GetDocumentoDigitalizadoByVeiculoIdQuery { VeiculoId = veiculoId };
-                var documentos = await _mediator.Send(query);
-
-                Log.Information("Os documentos do veículo foram buscados com sucesso.");
-                return Ok(documentos);
-            }
-            catch (Exception ex)
-            {
-                Log.Error(ex, "Erro ao buscar os documentos do veículo.");
-                return StatusCode(500, "Erro interno ao buscar documentod do veículo.");
-            }
-        }
-
-        [HttpGet("fotos-do-veiculo/{veiculoId}")]
-        public async Task<ActionResult<IEnumerable<FotoVeiculoDTO>>> GetFotoVeiculoByVeiculoId(int veiculoId)
-        {
-            try
-            {
-                Log.Information("Buscando todas as fotos do veículo.");
-
-                var query = new GetFotoVeiculoByVeiculoIdQuery { VeiculoId = veiculoId };
-                var fotos = await _mediator.Send(query);
-
-                Log.Information("As fotos do veículo foram buscadas com sucesso.");
-                return Ok(fotos);
-            }
-            catch (Exception ex)
-            {
-                Log.Error(ex, "Erro ao buscar as fotos do veículo.");
-                return StatusCode(500, "Erro interno ao buscar fotos do veículo.");
-            }
-        }
-
-        [HttpGet("todos-veiculos-por-ano-fabricacao-modelo/{anoFabModel}")]
+        [HttpGet("listar-todos-por-ano-fabricacao-modelo/{anoFabModel}")]
         public async Task<ActionResult<IEnumerable<VeiculoDTO>>> GetAllByAnoFabModel(int anoFabModel)
         {
             try
@@ -470,7 +144,7 @@ namespace RentFleet.API.Controllers
             }
         }
 
-        [HttpGet("todos-veiculos-por-combustivel/{combustivel}")]
+        [HttpGet("listar-todos-por-combustivel/{combustivel}")]
         public async Task<ActionResult<IEnumerable<VeiculoDTO>>> GetAllByCombustivel(string combustivel)
         {
             try
@@ -490,7 +164,7 @@ namespace RentFleet.API.Controllers
             }
         }
 
-        [HttpGet("todos-veiculos-por-cor/{cor}")]
+        [HttpGet("listar-todos-veiculos-por-cor/{cor}")]
         public async Task<ActionResult<IEnumerable<VeiculoDTO>>> GetAllByCor(string cor)
         {
             try
@@ -510,7 +184,7 @@ namespace RentFleet.API.Controllers
             }
         }
 
-        [HttpGet("todos-veiculos-por-marca/{marca}")]
+        [HttpGet("listar-todos-por-marca/{marca}")]
         public async Task<ActionResult<IEnumerable<VeiculoDTO>>> GetAllByMarca(string marca)
         {
             try
@@ -530,7 +204,7 @@ namespace RentFleet.API.Controllers
             }
         }
 
-        [HttpGet("todos-veiculos-por-modelo/{modelo}")]
+        [HttpGet("listar-todos-por-modelo/{modelo}")]
         public async Task<ActionResult<IEnumerable<VeiculoDTO>>> GetAllByModelo(string modelo)
         {
             try
@@ -550,7 +224,7 @@ namespace RentFleet.API.Controllers
             }
         }
 
-        [HttpGet("todos-veiculos-por-portas/{portas}")]
+        [HttpGet("listar-todos-por-numero-de-portas/{portas}")]
         public async Task<ActionResult<IEnumerable<VeiculoDTO>>> GetAllByNumeroPortas(int portas)
         {
             try
@@ -570,7 +244,7 @@ namespace RentFleet.API.Controllers
             }
         }
 
-        [HttpGet("todos-veiculos-por-tipo/{tipo}")]
+        [HttpGet("listar-todos-por-tipo/{tipo}")]
         public async Task<ActionResult<IEnumerable<VeiculoDTO>>> GetAllByTipo(string tipo)
         {
             try
@@ -590,7 +264,7 @@ namespace RentFleet.API.Controllers
             }
         }
 
-        [HttpGet("todos-veiculos-por-categoria/{categoria}")]
+        [HttpGet("listar-todos-por-categoria/{categoria}")]
         public async Task<ActionResult<IEnumerable<VeiculoDTO>>> GetAllByCategoria(string categoria)
         {
             try
@@ -610,47 +284,7 @@ namespace RentFleet.API.Controllers
             }
         }
 
-        [HttpGet("todas-manutencoes-do-veiculo/{veiculoId}")]
-        public async Task<ActionResult<IEnumerable<ManutencaoVeiculoDTO>>> GetManutencaoVeiculoByVeiculoId(int veiculoId)
-        {
-            try
-            {
-                Log.Information("Buscando todos as manutenções do veículo.");
-
-                var query = new GetAllManutencoesVeiculoByVeiculoIdQuery { VeiculoId = veiculoId };
-                var manutencoes = await _mediator.Send(query);
-
-                Log.Information("As manutenções do veículo foram encontradas com sucesso.");
-                return Ok(manutencoes);
-            }
-            catch (Exception ex)
-            {
-                Log.Error(ex, "Erro ao buscar as manutenções do veículo.");
-                return StatusCode(500, "Erro interno ao buscar as manutenções do veículo.");
-            }
-        }
-
-        [HttpGet("todas-manutencoes-por-tipo/{tipo}")]
-        public async Task<ActionResult<IEnumerable<ManutencaoVeiculoDTO>>> GetManutencaoVeiculoByTipoManutencao(string tipo)
-        {
-            try
-            {
-                Log.Information("Buscando todos as manutenções por tipo.");
-
-                var query = new GetAllManutencoesVeiculoByTipoManutencaoQuery { TipoManutencao = tipo };
-                var manutencoes = await _mediator.Send(query);
-
-                Log.Information("As manutenções do veículo foram encontradas com sucesso.");
-                return Ok(manutencoes);
-            }
-            catch (Exception ex)
-            {
-                Log.Error(ex, "Erro ao buscar as manutenções do veículo.");
-                return StatusCode(500, "Erro interno ao buscar as manutenções do veículo.");
-            }
-        }
-
-        [HttpPost("cadastrar-veiculo")]
+        [HttpPost("cadastrar")]
         [Authorize(Roles = "ADM,USR")]
         public async Task<ActionResult<int>> Create([FromBody] CreateVeiculoCommand command)
         {
@@ -677,223 +311,7 @@ namespace RentFleet.API.Controllers
             }
         }
 
-        [HttpPost("registrar-dados-do-caminhao")]
-        [Authorize(Roles = "ADM,USR")]
-        public async Task<ActionResult<int>> CreateDadosCaminhao([FromBody] CreateDadosCaminhaoCommand command)
-        {
-            if (command == null)
-            {
-                return BadRequest("O corpo da requisição não pode ser vazio.");
-            }
-
-            var log = Log.ForContext("DadosCaminhao", command.VeiculoId);
-
-            try
-            {
-                log.Information("Registrar os dados do Caminhão: {VeiculoId}.", command.VeiculoId);
-
-                var dadosCaminhaoId = await _mediator.Send(command);
-
-                log.Information("Dados do Caminhão {VeiculoId} registrado com sucesso. ID: {DadosCaminhaoId}.", command.VeiculoId, dadosCaminhaoId);
-                return Ok(dadosCaminhaoId);
-            }
-            catch (Exception ex)
-            {
-                log.Error(ex, "Erro ao registrar os dados do caminhão: {VeiculoId}.", command.VeiculoId);
-                return BadRequest("Erro ao registrar os dados do caminhão.");
-            }
-        }
-
-        [HttpPost("registrar-dados-da-moto")]
-        [Authorize(Roles = "ADM,USR")]
-        public async Task<ActionResult<int>> CreateDadosMoto([FromBody] CreateDadosMotoCommand command)
-        {
-            if (command == null)
-            {
-                return BadRequest("O corpo da requisição não pode ser vazio.");
-            }
-
-            var log = Log.ForContext("DadosMoto", command.VeiculoId);
-
-            try
-            {
-                log.Information("Registrar os dados da moto: {VeiculoId}.", command.VeiculoId);
-
-                var dadosMotoId = await _mediator.Send(command);
-
-                log.Information("Dados da Moto {veiculoId} registrados com sucesso. ID: {DadosMotoId}.", command.VeiculoId, dadosMotoId);
-                return Ok(dadosMotoId);
-            }
-            catch (Exception ex)
-            {
-                log.Error(ex, "Erro ao registrar dados da Moto: {VeiculoId}.", command.VeiculoId);
-                return BadRequest("Erro ao registrar dados da Moto.");
-            }
-        }
-
-        [HttpPost("adicionar-documento")]
-        [Authorize(Roles = "ADM,USR")]
-        public async Task<ActionResult<int>> CreateDocumentoDigitalizado([FromBody] CreateDocumentoDigitalizadoCommand command)
-        {
-            if (command == null)
-            {
-                return BadRequest("O corpo da requisição não pode ser vazio.");
-            }
-
-            var log = Log.ForContext("Veiculo", command.VeiculoId);
-
-            try
-            {
-                log.Information("Adicionando documento do veículo: {VeiculoId}.", command.VeiculoId);
-
-                var documentoId = await _mediator.Send(command);
-
-                log.Information("Documento do Veículo {VeiculoId} adicionado com sucesso. ID: {Id}.", command.VeiculoId, documentoId);
-                return Ok(documentoId);
-            }
-            catch (Exception ex)
-            {
-                log.Error(ex, "Erro ao adicionar documento ao veículo: {VeiculoId}.", command.VeiculoId);
-                return BadRequest("Erro ao adicionar documento.");
-            }
-        }
-
-        [HttpPost("adicionar-foto")]
-        [Authorize(Roles = "ADM,USR")]
-        public async Task<ActionResult<int>> CreateFoto([FromBody] CreateFotoVeiculoCommand command)
-        {
-            if (command == null)
-            {
-                return BadRequest("O corpo da requisição não pode ser vazio.");
-            }
-
-            var log = Log.ForContext("Veiculo", command.VeiculoId);
-
-            try
-            {
-                log.Information("Adicionando foto do veículo: {VeiculoId}.", command.VeiculoId);
-
-                var fotoId = await _mediator.Send(command);
-
-                log.Information("Foto do Veículo {VeiculoId} adicionada com sucesso. ID: {Id}.", command.VeiculoId, fotoId);
-                return Ok(fotoId);
-            }
-            catch (Exception ex)
-            {
-                log.Error(ex, "Erro ao adicionar foto ao veículo: {VeiculoId}.", command.VeiculoId);
-                return BadRequest("Erro ao adicionar foto.");
-            }
-        }
-
-        [HttpPost("registrar-dados-localizacao-operacao")]
-        [Authorize(Roles = "ADM,USR")]
-        public async Task<ActionResult<int>> CreateDadosLocOper([FromBody] CreateDadosLocalizacaoOperacaoCommand command)
-        {
-            if (command == null)
-            {
-                return BadRequest("O corpo da requisição não pode ser vazio.");
-            }
-
-            var log = Log.ForContext("Veiculo", command.VeiculoId);
-
-            try
-            {
-                log.Information("Registrando dados de localização e operação do veículo: {VeiculoId}.", command.VeiculoId);
-
-                var dadosLocOperId = await _mediator.Send(command);
-
-                log.Information("Dados de localização e operação do veículo {VeiculoId} registrados com sucesso. ID: {Id}.", command.VeiculoId, dadosLocOperId);
-                return Ok(dadosLocOperId);
-            }
-            catch (Exception ex)
-            {
-                log.Error(ex, "Erro ao registrar dados de localização e operação do veículo: {VeiculoId}.", command.VeiculoId);
-                return BadRequest("Erro ao registrar dados de localizaçao e operação.");
-            }
-        }
-
-        [HttpPost("registrar-dados-seguranca-conformidade")]
-        [Authorize(Roles = "ADM,USR")]
-        public async Task<ActionResult<int>> CreateDadosSegConf([FromBody] CreateDadosSegurancaConformidadeCommand command)
-        {
-            if (command == null)
-            {
-                return BadRequest("O corpo da requisição não pode ser vazio.");
-            }
-
-            var log = Log.ForContext("Veiculo", command.VeiculoId);
-
-            try
-            {
-                log.Information("Registrando dados de segurança e conformidade do veículo: {VeiculoId}.", command.VeiculoId);
-
-                var segurancaConformidadeId = await _mediator.Send(command);
-
-                log.Information("Dados de segurança e conformidade do veículo {VeiculoId} registrados com sucesso. ID: {Id}.", command.VeiculoId, segurancaConformidadeId);
-                return Ok(segurancaConformidadeId);
-            }
-            catch (Exception ex)
-            {
-                log.Error(ex, "Erro ao registrar dados de segurança e conformidade do veículo: {VeiculoId}.", command.VeiculoId);
-                return BadRequest("Erro ao registrar dados de localizaçao e operação.");
-            }
-        }
-
-        [HttpPost("registrar-dados-tecnicos")]
-        [Authorize(Roles = "ADM,USR")]
-        public async Task<ActionResult<int>> CreateDadosTecnicosf([FromBody] CreateDadosTecnicosVeiculoCommand command)
-        {
-            if (command == null)
-            {
-                return BadRequest("O corpo da requisição não pode ser vazio.");
-            }
-
-            var log = Log.ForContext("Veiculo", command.VeiculoId);
-
-            try
-            {
-                log.Information("Registrando dados tecnicos do veículo: {VeiculoId}.", command.VeiculoId);
-
-                var tecnicoId = await _mediator.Send(command);
-
-                log.Information("Dados tecnicos do veículo {VeiculoId} registrados com sucesso. ID: {Id}.", command.VeiculoId, tecnicoId);
-                return Ok(tecnicoId);
-            }
-            catch (Exception ex)
-            {
-                log.Error(ex, "Erro ao registrar dados tecnicos do veículo: {VeiculoId}.", command.VeiculoId);
-                return BadRequest("Erro ao registrar dados tenicos.");
-            }
-        }
-
-        [HttpPost("registrar-manutencao-veiculo")]
-        [Authorize(Roles = "ADM,USR")]
-        public async Task<ActionResult<int>> CreateManutencaoVeiculo([FromBody] CreateManutencaoVeiculoCommand command)
-        {
-            if (command == null)
-            {
-                return BadRequest("O corpo da requisição não pode ser vazio.");
-            }
-
-            var log = Log.ForContext("Veiculo", command.VeiculoId);
-
-            try
-            {
-                log.Information("Registrar Manutenção feita no veículo: {VeiculoId}.", command.VeiculoId);
-
-                var manutencaoId = await _mediator.Send(command);
-
-                log.Information("Manutencao do veículo {VeiculoId} registrada com sucesso. ID: {Id}.", command.VeiculoId, manutencaoId);
-                return Ok(manutencaoId);
-            }
-            catch (Exception ex)
-            {
-                log.Error(ex, "Erro ao registrar manutenção feita no veículo: {VeiculoId}.", command.VeiculoId);
-                return BadRequest("Erro ao registrar manutenção do veículo.");
-            }
-        }
-
-        [HttpPut("editar-veiculo")]
+        [HttpPut("editar")]
         [Authorize(Roles = "ADM,USR")]
         public async Task<ActionResult> Update([FromBody] UpdateVeiculoCommand command)
         {
@@ -915,183 +333,7 @@ namespace RentFleet.API.Controllers
             }
         }
 
-        [HttpPut("editar-dados-do-caminhao")]
-        [Authorize(Roles = "ADM,USR")]
-        public async Task<ActionResult> UpdateDadosCaminhao([FromBody] UpdateDadosCaminhaoCommand command)
-        {
-            var log = Log.ForContext("DadosCaminhaoId", command.Id); // Adiciona contexto ao log
-
-            try
-            {
-                log.Information("Atualizando dados do caminhão com ID: {DadosCaminhaoId}.", command.Id);
-
-                await _mediator.Send(command);
-
-                log.Information("Dados do Caminhão {DadosCaminhaoId} atualizado com sucesso.", command.Id);
-                return NoContent();
-            }
-            catch (Exception ex)
-            {
-                log.Error(ex, "Erro ao atualizar dados do caminhão ID: {DadosCaminhaoId}.", command.Id);
-                return BadRequest("Erro ao atualizar os dados do caminhão.");
-            }
-        }
-
-        [HttpPut("editar-dados-da-moto")]
-        [Authorize(Roles = "ADM,USR")]
-        public async Task<ActionResult> UpdateDadosMoto([FromBody] UpdateDadosMotoCommand command)
-        {
-            var log = Log.ForContext("DadosMotoId", command.Id); // Adiciona contexto ao log
-
-            try
-            {
-                log.Information("Atualizando dados da moto ID: {DadosMotoId}.", command.Id);
-
-                await _mediator.Send(command);
-
-                log.Information("Dados da moto {DadosMotoId} atualizados com sucesso.", command.Id);
-                return NoContent();
-            }
-            catch (Exception ex)
-            {
-                log.Error(ex, "Erro ao atualizar dados da moto ID: {DadosMotoId}.", command.Id);
-                return BadRequest("Erro ao atualizar dados da moto.");
-            }
-        }
-
-        [HttpPut("editar-documento")]
-        [Authorize(Roles = "ADM,USR")]
-        public async Task<ActionResult> UpdateDocumento([FromBody] UpdateDocumentoDigitalizadoCommand command)
-        {
-            var log = Log.ForContext("Id", command.Id); // Adiciona contexto ao log
-
-            try
-            {
-                log.Information("Atualizando documento com ID: {Id}.", command.Id);
-
-                await _mediator.Send(command);
-
-                log.Information("Documento {Id} atualizado com sucesso.", command.Id);
-                return NoContent();
-            }
-            catch (Exception ex)
-            {
-                log.Error(ex, "Erro ao atualizar documento com ID: {Id}.", command.Id);
-                return BadRequest("Erro ao atualizar documento.");
-            }
-        }
-
-        [HttpPut("editar-foto")]
-        [Authorize(Roles = "ADM,USR")]
-        public async Task<ActionResult> UpdateFoto([FromBody] UpdateFotoVeiculoCommand command)
-        {
-            var log = Log.ForContext("veiculoId", command.Id); // Adiciona contexto ao log
-
-            try
-            {
-                log.Information("Atualizando foto com ID: {Id}.", command.Id);
-
-                await _mediator.Send(command);
-
-                log.Information("Foto {Id} atualizada com sucesso.", command.Id);
-                return NoContent();
-            }
-            catch (Exception ex)
-            {
-                log.Error(ex, "Erro ao atualizar foto com ID: {Id}.", command.Id);
-                return BadRequest("Erro ao atualizar foto.");
-            }
-        }
-
-        [HttpPut("editar-dados-localizacao-operacao")]
-        [Authorize(Roles = "ADM,USR")]
-        public async Task<ActionResult> UpdateDadosLocOper([FromBody] UpdateDadosLocalizacaoOperacaoCommand command)
-        {
-            var log = Log.ForContext("DadosLocOper", command.Id); // Adiciona contexto ao log
-
-            try
-            {
-                log.Information("Atualizando os dados de localização e operação com ID: {Id}.", command.Id);
-
-                await _mediator.Send(command);
-
-                log.Information("Dados de localização e operação {Id} atualizado com sucesso.", command.Id);
-                return NoContent();
-            }
-            catch (Exception ex)
-            {
-                log.Error(ex, "Erro ao atualizar os dados de localização e operação com ID: {Id}.", command.Id);
-                return BadRequest("Erro ao atualizar os dados de localização e operação.");
-            }
-        }
-
-        [HttpPut("editar-dados-seguranca-conformidade")]
-        [Authorize(Roles = "ADM,USR")]
-        public async Task<ActionResult> UpdateDadosSegConf([FromBody] UpdateDadosSegurancaConformidadeCommand command)
-        {
-            var log = Log.ForContext("SegurancaConformidade", command.Id); // Adiciona contexto ao log
-
-            try
-            {
-                log.Information("Atualizando os dados de segurança e conformidade com ID: {Id}.", command.Id);
-
-                await _mediator.Send(command);
-
-                log.Information("Dados de segurança e conformidade {Id} atualizado com sucesso.", command.Id);
-                return NoContent();
-            }
-            catch (Exception ex)
-            {
-                log.Error(ex, "Erro ao atualizar os dados de segurança e conformidade com ID: {Id}.", command.Id);
-                return BadRequest("Erro ao atualizar os dados de segurança e conformidade.");
-            }
-        }
-
-        [HttpPut("editar-dados-tecnicos")]
-        [Authorize(Roles = "ADM,USR")]
-        public async Task<ActionResult> UpdateDadosTecnicos([FromBody] UpdateDadosTecnicosVeiculoCommand command)
-        {
-            var log = Log.ForContext("DadosTecnicos", command.Id); // Adiciona contexto ao log
-
-            try
-            {
-                log.Information("Atualizando os dados tecnicos com ID: {Id}.", command.Id);
-
-                await _mediator.Send(command);
-
-                log.Information("Dados tecnicos {Id} atualizados com sucesso.", command.Id);
-                return NoContent();
-            }
-            catch (Exception ex)
-            {
-                log.Error(ex, "Erro ao atualizar os dados tecnicos com ID: {Id}.", command.Id);
-                return BadRequest("Erro ao atualizar os dados tecnicos.");
-            }
-        }
-
-        [HttpPut("editar-registro-manutencao")]
-        [Authorize(Roles = "ADM,USR")]
-        public async Task<ActionResult> UpdateManutencaoVeiculo([FromBody] UpdateManutencaoVeiculoCommand command)
-        {
-            var log = Log.ForContext("Manutencao", command.Id); // Adiciona contexto ao log
-
-            try
-            {
-                log.Information("Atualizando registro de manutenção ID: {Id}.", command.Id);
-
-                await _mediator.Send(command);
-
-                log.Information("Registro de Manutenção {Id} atualizado com sucesso.", command.Id);
-                return NoContent();
-            }
-            catch (Exception ex)
-            {
-                log.Error(ex, "Erro ao atualizar registro de manutenção ID: {Id}.", command.Id);
-                return BadRequest("Erro ao atualizar registro de manutenção de veiculo.");
-            }
-        }
-
-        [HttpDelete("excluir-veículo/{id}")]
+        [HttpDelete("excluir/{id}")]
         [Authorize(Roles = "ADM,USR")]
         public async Task<ActionResult> Delete(int id)
         {
@@ -1111,190 +353,6 @@ namespace RentFleet.API.Controllers
             {
                 log.Error(ex, "Erro ao excluir veículo com ID: {veiculoId}.", id);
                 return BadRequest("Erro ao excluir veículo.");
-            }
-        }
-
-        [HttpDelete("excluir-dados-do-caminhao/{id}")]
-        [Authorize(Roles = "ADM,USR")]
-        public async Task<ActionResult> DeleteDadosCaminhao(int id)
-        {
-            var log = Log.ForContext("DadosCaminhaoId", id); // Adiciona contexto ao log
-
-            try
-            {
-                log.Information("Excluindo dados do caminhão ID: {DadosCaminhaoId}.", id);
-
-                var command = new DeleteDadosCaminhaoCommand { Id = id };
-                await _mediator.Send(command);
-
-                log.Information("Dados do caminhão {DadosCaminhaoId} excluídos com sucesso.", id);
-                return NoContent();
-            }
-            catch (Exception ex)
-            {
-                log.Error(ex, "Erro ao excluir dados do caminhão ID: {DadosCaminhaoId}.", id);
-                return BadRequest("Erro ao excluir dados do caminhão.");
-            }
-        }
-
-        [HttpDelete("excluir-dados-da-moto/{id}")]
-        [Authorize(Roles = "ADM,USR")]
-        public async Task<ActionResult> DeleteDadosMoto(int id)
-        {
-            var log = Log.ForContext("DadosMotoId", id); // Adiciona contexto ao log
-
-            try
-            {
-                log.Information("Excluindo dados da moto ID: {DadosMotoId}.", id);
-
-                var command = new DeleteDadosMotoCommand { Id = id };
-                await _mediator.Send(command);
-
-                log.Information("Dados da moto {DadosMotoId} excluídos com sucesso.", id);
-                return NoContent();
-            }
-            catch (Exception ex)
-            {
-                log.Error(ex, "Erro ao excluir dados da moto ID: {DadosMotoId}.", id);
-                return BadRequest("Erro ao excluir dados da moto.");
-            }
-        }
-
-        [HttpDelete("excluir-documento/{id}")]
-        [Authorize(Roles = "ADM,USR")]
-        public async Task<ActionResult> DeleteDocumento(int id)
-        {
-            var log = Log.ForContext("veiculoId", id); // Adiciona contexto ao log
-
-            try
-            {
-                log.Information("Excluindo documento com ID: {Id}.", id);
-
-                var command = new DeleteDocumentoDigitalizadoCommand { Id = id };
-                await _mediator.Send(command);
-
-                log.Information("Documento {Id} excluído com sucesso.", id);
-                return NoContent();
-            }
-            catch (Exception ex)
-            {
-                log.Error(ex, "Erro ao excluir documento com ID: {Id}.", id);
-                return BadRequest("Erro ao excluir documento.");
-            }
-        }
-
-        [HttpDelete("excluir-foto/{id}")]
-        [Authorize(Roles = "ADM,USR")]
-        public async Task<ActionResult> DeleteFoto(int id)
-        {
-            var log = Log.ForContext("veiculoId", id); // Adiciona contexto ao log
-
-            try
-            {
-                log.Information("Excluindo foto com ID: {Id}.", id);
-
-                var command = new DeleteFotoVeiculoCommand { Id = id };
-                await _mediator.Send(command);
-
-                log.Information("Foto {Id} excluída com sucesso.", id);
-                return NoContent();
-            }
-            catch (Exception ex)
-            {
-                log.Error(ex, "Erro ao excluir foto com ID: {Id}.", id);
-                return BadRequest("Erro ao excluir foto.");
-            }
-        }
-
-        [HttpDelete("excluir-dados-localizacao-operacao/{id}")]
-        [Authorize(Roles = "ADM,USR")]
-        public async Task<ActionResult> DeleteDadosLocOper(int id)
-        {
-            var log = Log.ForContext("DadosLocOper", id); // Adiciona contexto ao log
-
-            try
-            {
-                log.Information("Excluindo os dados de localização e operação com ID: {Id}.", id);
-
-                var command = new DeleteDadosLocalizacaoOperacaoCommand { Id = id };
-                await _mediator.Send(command);
-
-                log.Information("Dados de localização e operação {Id} excluídos com sucesso.", id);
-                return NoContent();
-            }
-            catch (Exception ex)
-            {
-                log.Error(ex, "Erro ao excluir dados de localização e operação com ID: {Id}.", id);
-                return BadRequest("Erro ao excluir dados de localização e operação.");
-            }
-        }
-
-        [HttpDelete("excluir-dados-seguranca-conformidade/{id}")]
-        [Authorize(Roles = "ADM,USR")]
-        public async Task<ActionResult> DeleteDadosSegConf(int id)
-        {
-            var log = Log.ForContext("SegurancaConformidade", id); // Adiciona contexto ao log
-
-            try
-            {
-                log.Information("Excluindo os dados de segurança e conformidade com ID: {Id}.", id);
-
-                var command = new DeleteDadosSegurancaConformidadeCommand { Id = id };
-                await _mediator.Send(command);
-
-                log.Information("Dados de segurança e conformidade {Id} excluídos com sucesso.", id);
-                return NoContent();
-            }
-            catch (Exception ex)
-            {
-                log.Error(ex, "Erro ao excluir dados de segurança e conformidade com ID: {Id}.", id);
-                return BadRequest("Erro ao excluir dados de segurança e conformidade.");
-            }
-        }
-
-        [HttpDelete("excluir-dados-tecnicos/{id}")]
-        [Authorize(Roles = "ADM,USR")]
-        public async Task<ActionResult> DeleteDadosTecnicos(int id)
-        {
-            var log = Log.ForContext("DadosTecnicos", id); // Adiciona contexto ao log
-
-            try
-            {
-                log.Information("Excluindo os dados tecnicos com ID: {Id}.", id);
-
-                var command = new DeleteDadosTecnicosVeiculoCommand { Id = id };
-                await _mediator.Send(command);
-
-                log.Information("Dados tecnicos {Id} excluídos com sucesso.", id);
-                return NoContent();
-            }
-            catch (Exception ex)
-            {
-                log.Error(ex, "Erro ao excluir dados tecnicos com ID: {Id}.", id);
-                return BadRequest("Erro ao excluir tecnicos.");
-            }
-        }
-
-        [HttpDelete("excluir-registro-manutencao/{id}")]
-        [Authorize(Roles = "ADM,USR")]
-        public async Task<ActionResult> DeleteManutencaoVeiculo(int id)
-        {
-            var log = Log.ForContext("Manutencao", id); // Adiciona contexto ao log
-
-            try
-            {
-                log.Information("Excluindo registro de manutenção ID: {Id}.", id);
-
-                var command = new DeleteVeiculoCommand { Id = id };
-                await _mediator.Send(command);
-
-                log.Information("Registro de Manutenção {Id} excluído com sucesso.", id);
-                return NoContent();
-            }
-            catch (Exception ex)
-            {
-                log.Error(ex, "Erro ao excluir registro de manutenção ID: {Id}.", id);
-                return BadRequest("Erro ao excluir registro de manutenção.");
             }
         }
     }
