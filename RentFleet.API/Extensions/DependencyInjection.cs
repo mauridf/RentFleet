@@ -40,6 +40,12 @@ using RentFleet.Application.Queries.DadosTecnicosVeiculo;
 using RentFleet.Application.Commands.ManutencaoVeiculo;
 using RentFleet.Application.Handlers.ManutencaoVeiculo;
 using RentFleet.Application.Queries.ManutencaoVeiculo;
+using RentFleet.Application.Commands.RegraDescontoJuros;
+using RentFleet.Application.Handlers.RegraDescontoJuros;
+using RentFleet.Application.Queries.RegraDescontoJuros;
+using RentFleet.Application.Commands.ValorLocacao;
+using RentFleet.Application.Handlers.ValoLocacao;
+using RentFleet.Application.Queries.ValorLocacao;
 
 namespace RentFleet.API.Extensions
 {
@@ -59,6 +65,8 @@ namespace RentFleet.API.Extensions
             services.AddScoped<IDadosSegurancaConformidadeRepository, DadosSegurancaConformidadeRepository>();
             services.AddScoped<IDadosTecnicosVeiculoRepository, DadosTecnicosVeiculoRepository>();
             services.AddScoped<IManutencaoVeiculoRepository, ManutencaoVeiculoRepository>();
+            services.AddScoped<IRegraDescontoJurosRepository, RegrasDescontoJurosRepository>();
+            services.AddScoped<IValorLocacaoRepository, ValorLocacaoRepository>();
 
             // Registra serviços de infraestrutura
             services.AddScoped<PasswordHasher>();
@@ -79,6 +87,8 @@ namespace RentFleet.API.Extensions
             services.AddAutoMapper(typeof(DadosSegurancaConformidadeProfile).Assembly);
             services.AddAutoMapper(typeof(DadosTecnicosVeiculoProfile).Assembly);
             services.AddAutoMapper(typeof(ManutencaoVeiculoProfile).Assembly);
+            services.AddAutoMapper(typeof(RegraDescontoJurosProfile).Assembly);
+            services.AddAutoMapper(typeof(ValorLocacaoProfile).Assembly);
 
             // Registra FluentValidation
             services.AddValidatorsFromAssembly(typeof(Program).Assembly);
@@ -170,6 +180,18 @@ namespace RentFleet.API.Extensions
             services.AddTransient<IRequestHandler<GetAllManutencoesVeiculoByVeiculoIdQuery, IEnumerable<ManutencaoVeiculoDTO>>, GetAllManutencoesVeiculoByVeiculoIdQueryHandler>();
             services.AddTransient<IRequestHandler<GetAllManutencoesVeiculoByTipoManutencaoQuery, IEnumerable<ManutencaoVeiculoDTO>>, GetAllManutencoesVeiculoByTipoManutencaoQueryHandler>();
             services.AddTransient<IRequestHandler<GetManutencaoVeiculoByIdQuery, ManutencaoVeiculoDTO>, GetManutencaoVeiculoByIdQueryHandler>();
+
+            services.AddTransient<IRequestHandler<CreateRegraDescontoJurosCommand, int>, CreateRegraDescontoJurosCommandHandler>();
+            services.AddTransient<IRequestHandler<UpdateRegraDescontoJurosCommand, Unit>, UpdateRegraDescontoJurosCommandHandler>();
+            services.AddTransient<IRequestHandler<DeleteRegraDescontoJurosCommand, Unit>, DeleteRegraDescontoJurosCommandHandler>();
+            services.AddTransient<IRequestHandler<GetRegrasDescontoJurosByTipoRegraQuery, IEnumerable<RegraDescontoJurosDTO>>, GetRegrasDescontoJurosByTipoRegraQueryHandler>();
+            services.AddTransient<IRequestHandler<GetRegraDescontoJurosByIdQuery, RegraDescontoJurosDTO>, GetRegraDescontoJurosByIdQueryHandler>();
+
+            services.AddTransient<IRequestHandler<CreateValorLocacaoCommand, int>, CreateValorLocacaoCommandHandler>();
+            services.AddTransient<IRequestHandler<UpdateValorLocacaoCommand, Unit>, UpdateValorLocacaoCommandHandler>();
+            services.AddTransient<IRequestHandler<DeleteValorLocacaoCommand, Unit>, DeleteValorLocacaoCommandHandler>();
+            services.AddTransient<IRequestHandler<GetAllValoresLocacaoByTipoVeiculoQuery, IEnumerable<ValorLocacaoDTO>>, GetAllValoresLocacaoByTipoVeiculoQueryHandler>();
+            services.AddTransient<IRequestHandler<GetValorLocacaoByIdQuery, ValorLocacaoDTO>, GetValorLocacaoByIdQueryHandler>();
 
             return services;
         }
