@@ -1,10 +1,8 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using RentFleet.Application.Commands.RegraDescontoJuros;
 using RentFleet.Application.Commands.ValorLocacao;
 using RentFleet.Application.DTOs;
-using RentFleet.Application.Queries.RegraDescontoJuros;
 using RentFleet.Application.Queries.ValorLocacao;
 using Serilog;
 

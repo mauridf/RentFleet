@@ -46,6 +46,9 @@ using RentFleet.Application.Queries.RegraDescontoJuros;
 using RentFleet.Application.Commands.ValorLocacao;
 using RentFleet.Application.Handlers.ValoLocacao;
 using RentFleet.Application.Queries.ValorLocacao;
+using RentFleet.Application.Commands.Reserva;
+using RentFleet.Application.Handlers.Reserva;
+using RentFleet.Application.Queries.Reserva;
 
 namespace RentFleet.API.Extensions
 {
@@ -67,6 +70,7 @@ namespace RentFleet.API.Extensions
             services.AddScoped<IManutencaoVeiculoRepository, ManutencaoVeiculoRepository>();
             services.AddScoped<IRegraDescontoJurosRepository, RegrasDescontoJurosRepository>();
             services.AddScoped<IValorLocacaoRepository, ValorLocacaoRepository>();
+            services.AddScoped<IReservaRepository, ReservaRepository>();
 
             // Registra serviços de infraestrutura
             services.AddScoped<PasswordHasher>();
@@ -89,6 +93,7 @@ namespace RentFleet.API.Extensions
             services.AddAutoMapper(typeof(ManutencaoVeiculoProfile).Assembly);
             services.AddAutoMapper(typeof(RegraDescontoJurosProfile).Assembly);
             services.AddAutoMapper(typeof(ValorLocacaoProfile).Assembly);
+            services.AddAutoMapper(typeof(ReservaProfile).Assembly);
 
             // Registra FluentValidation
             services.AddValidatorsFromAssembly(typeof(Program).Assembly);
@@ -192,6 +197,13 @@ namespace RentFleet.API.Extensions
             services.AddTransient<IRequestHandler<DeleteValorLocacaoCommand, Unit>, DeleteValorLocacaoCommandHandler>();
             services.AddTransient<IRequestHandler<GetAllValoresLocacaoByTipoVeiculoQuery, IEnumerable<ValorLocacaoDTO>>, GetAllValoresLocacaoByTipoVeiculoQueryHandler>();
             services.AddTransient<IRequestHandler<GetValorLocacaoByIdQuery, ValorLocacaoDTO>, GetValorLocacaoByIdQueryHandler>();
+
+            services.AddTransient<IRequestHandler<CreateReservaCommand, int>, CreateReservaCommandHandler>();
+            services.AddTransient<IRequestHandler<UpdateReservaCommand, Unit>, UpdateReservaCommandHandler>();
+            services.AddTransient<IRequestHandler<DeleteReservaCommand, Unit>, DeleteReservaCommandHandler>();
+            services.AddTransient<IRequestHandler<GetAllReservasByClienteIdQuery, IEnumerable<ReservaDTO>>, GetAllReservasByClienteIdQueryHandler>();
+            services.AddTransient<IRequestHandler<GetAllReservasByVeiculoIdQuery, IEnumerable<ReservaDTO>>, GetAllReservasByVeiculoIdQueryHandler>();
+            services.AddTransient<IRequestHandler<GetReservaByIdQuery, ReservaDTO>, GetReservaByIdQueryHandler>();
 
             return services;
         }

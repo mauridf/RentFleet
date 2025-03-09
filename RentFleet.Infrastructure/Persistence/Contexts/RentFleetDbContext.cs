@@ -40,6 +40,7 @@ namespace RentFleet.Infrastructure.Persistence.Contexts
             modelBuilder.ApplyConfiguration(new ManutencaoVeiculoConfiguration());
             modelBuilder.ApplyConfiguration(new RegraDescontoJurosConfiguration());
             modelBuilder.ApplyConfiguration(new ValorLocacaoConfiguration());
+            modelBuilder.ApplyConfiguration(new ReservaConfiguration());
 
             // Relacionamentos
             modelBuilder.Entity<DadosTecnicosVeiculo>()
