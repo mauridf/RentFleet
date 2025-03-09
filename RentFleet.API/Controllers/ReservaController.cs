@@ -2,11 +2,8 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using RentFleet.Application.Commands.Reserva;
-using RentFleet.Application.Commands.ValorLocacao;
 using RentFleet.Application.DTOs;
 using RentFleet.Application.Queries.Reserva;
-using RentFleet.Application.Queries.ValorLocacao;
-using RentFleet.Domain.Entities;
 using Serilog;
 
 namespace RentFleet.API.Controllers
