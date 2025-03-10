@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using RentFleet.Application.Commands.LocacaoVeiculo;
 using RentFleet.Application.DTOs;
 using RentFleet.Application.Queries.LocacaoVeiculo;
+using RentFleet.Domain.Entities;
 using Serilog;
 
 namespace RentFleet.API.Controllers
@@ -82,6 +83,46 @@ namespace RentFleet.API.Controllers
             {
                 Log.Error(ex, "Erro ao buscar locações por cliente.");
                 return StatusCode(500, "Erro interno ao buscar locações por cliente.");
+            }
+        }
+
+        [HttpGet("locados")]
+        public async Task<ActionResult<List<LocacaoVeiculo>>> GetVeiculosLocados()
+        {
+            try
+            {
+                Log.Information("Buscando todos os Veículos Locados.");
+
+                var veiculos = await _mediator.Send(new GetVeiculosLocadosQuery());
+
+                Log.Information("Todos os Veículos Locados foram encontrados.");
+
+                return Ok(veiculos);
+            }
+            catch(Exception ex)
+            {
+                Log.Error(ex, "Erro ao buscar veículos locados.");
+                return StatusCode(500, "Erro interno ao buscar veículos locados.");
+            }
+        }
+
+        [HttpGet("disponiveis")]
+        public async Task<ActionResult<List<LocacaoVeiculo>>> GetVeiculosDisponiveis()
+        {
+            try
+            {
+                Log.Information("Buscando todos os Veículos Disponíveis.");
+
+                var veiculos = await _mediator.Send(new GetVeiculosDisponiveisQuery());
+
+                Log.Information("Todos os Veículos disponíveis foram encontrados.");
+
+                return Ok(veiculos);
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, "Erro ao buscar veículos disponíveis.");
+                return StatusCode(500, "Erro interno ao buscar veículos disponíveis.");
             }
         }
 

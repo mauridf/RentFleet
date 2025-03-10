@@ -53,6 +53,8 @@ using RentFleet.Application.Commands.LocacaoVeiculo;
 using RentFleet.Application.Handlers.LocacaoVeiculo;
 using RentFleet.Application.Queries.LocacaoVeiculo;
 using RentFleet.Application.Services;
+using RentFleet.Application.Handlers.Dashboard;
+using RentFleet.Application.Queries.Dashboard;
 
 namespace RentFleet.API.Extensions
 {
@@ -76,9 +78,11 @@ namespace RentFleet.API.Extensions
             services.AddScoped<IValorLocacaoRepository, ValorLocacaoRepository>();
             services.AddScoped<IReservaRepository, ReservaRepository>();
             services.AddScoped<ILocacaoVeiculoRepository, LocacaoVeiculoRepository>();
+            services.AddTransient<ILocacaoVeiculoRepository, LocacaoVeiculoRepository>();
 
             // Registrando o LocacaoVeiculoService como um serviço de aplicação
             services.AddTransient<LocacaoVeiculoService>();
+            services.AddTransient<DashboardService>();
 
             // Registra serviços de infraestrutura
             services.AddScoped<PasswordHasher>();
@@ -220,7 +224,12 @@ namespace RentFleet.API.Extensions
             services.AddTransient<IRequestHandler<GetAllLocacoesVeiculoByClienteIdQuery, IEnumerable<LocacaoVeiculoDTO>>, GetAllLocacaoVeiculoByClienteIdQueryHandler>();
             services.AddTransient<IRequestHandler<GetAllLocacoesVeiculoByVeiculoIdQuery, IEnumerable<LocacaoVeiculoDTO>>, GetAllLocacaoVeiculoByVeiculoIdQueryHandler>();
             services.AddTransient<IRequestHandler<GetLocacaoVeiculoByIdQuery, LocacaoVeiculoDTO>, GetLocacaoVeiculoByIdQueryHandler>();
+            services.AddTransient<IRequestHandler<GetVeiculosLocadosQuery, List<LocacaoVeiculo>>, GetVeiculosLocadosQueryHandler>();
+            services.AddTransient<IRequestHandler<GetVeiculosDisponiveisQuery, List<LocacaoVeiculo>>, GetVeiculosDisponiveisQueryHandler>();
 
+            services.AddTransient<IRequestHandler<GetLocacoesPorMesQuery, List<LocacaoVeiculo>>, GetLocacoesPorMesQueryHandler>();
+
+            services.AddTransient<IRequestHandler<GetDashboardDataQuery, DashboardDTO>, GetDashboardDataQueryHandler>();
 
             return services;
         }
