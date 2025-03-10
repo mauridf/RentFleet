@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using RentFleet.Domain.Entities;
+using RentFleet.Domain.Enums;
 using RentFleet.Domain.Interfaces;
 using RentFleet.Infrastructure.Persistence.Contexts;
 
@@ -35,6 +36,12 @@ namespace RentFleet.Infrastructure.Persistence.Repositories
             return await _context.ValoresLocacao
                 .Where(v => EF.Functions.Like(v.TipoVeiculo.ToString().ToUpper(), tipo.ToUpper()))
                 .ToListAsync();
+        }
+
+        public async Task<ValorLocacao?> GetByTipoCategoriaAsync(TipoVeiculo tipo, CategoriaVeiculo categoria)
+        {
+            return await _context.ValoresLocacao
+                .FirstOrDefaultAsync(v => v.TipoVeiculo == tipo && v.Categoria == categoria);
         }
 
         public async Task<ValorLocacao> GetByIdAsync(int id)

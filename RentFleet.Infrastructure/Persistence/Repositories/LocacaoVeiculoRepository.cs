@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using RentFleet.Domain.Entities;
+using RentFleet.Domain.Enums;
 using RentFleet.Domain.Interfaces;
 using RentFleet.Infrastructure.Persistence.Contexts;
 
@@ -42,6 +43,20 @@ namespace RentFleet.Infrastructure.Persistence.Repositories
             return await _context.LocacoesVeiculos
                 .Where(l => l.VeiculoId == veiculoId)
                 .ToListAsync();
+        }
+
+        public async Task<LocacaoVeiculo?> GetUltimaLocacaoPorVeiculo(int veiculoId)
+        {
+            return await _context.LocacoesVeiculos
+                .Where(l => l.VeiculoId == veiculoId)
+                .OrderByDescending(l => l.DataInicio)
+                .FirstOrDefaultAsync();
+        }
+
+        public async Task<LocacaoVeiculo?> GetLocacaoAtivaPorVeiculo(int veiculoId)
+        {
+            return await _context.LocacoesVeiculos
+                .FirstOrDefaultAsync(l => l.VeiculoId == veiculoId && l.StatusLocacao == StatusLocacao.Ativa);
         }
 
         public async Task<LocacaoVeiculo> GetByIdAsync(int id)

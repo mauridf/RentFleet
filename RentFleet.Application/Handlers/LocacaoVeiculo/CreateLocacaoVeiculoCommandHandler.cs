@@ -1,5 +1,6 @@
 ﻿using MediatR;
 using RentFleet.Application.Commands.LocacaoVeiculo;
+using RentFleet.Application.Services;
 using RentFleet.Domain.Interfaces;
 using RentFleet.Infrastructure.Persistence.Repositories;
 using Serilog;
@@ -8,11 +9,11 @@ namespace RentFleet.Application.Handlers.LocacaoVeiculo
 {
     public class CreateLocacaoVeiculoCommandHandler : IRequestHandler<CreateLocacaoVeiculoCommand, int>
     {
-        private readonly ILocacaoVeiculoRepository _locacaoVeiculoRepository;
+        private readonly LocacaoVeiculoService _service;
 
-        public CreateLocacaoVeiculoCommandHandler(ILocacaoVeiculoRepository locacaoVeiculoRepository)
+        public CreateLocacaoVeiculoCommandHandler(LocacaoVeiculoService service)
         {
-            _locacaoVeiculoRepository = locacaoVeiculoRepository;
+            _service = service;
         }
 
         public async Task<int> Handle(CreateLocacaoVeiculoCommand request, CancellationToken cancellationToken)
@@ -23,27 +24,7 @@ namespace RentFleet.Application.Handlers.LocacaoVeiculo
             {
                 log.Information("Registrando Locação para o Veículo: {VeiculoId}.", request.VeiculoId);
 
-                var locacao = new RentFleet.Domain.Entities.LocacaoVeiculo
-                {
-                    VeiculoId = request.VeiculoId,
-                    ClienteId = request.ClienteId,
-                    DataInicio = request.DataInicio,
-                    DataFim = request.DataFim,
-                    ValorBase = request.ValorBase,
-                    Desconto = request.Desconto,
-                    Juros = request.Juros,
-                    ValorTotal = request.ValorTotal,
-                    StatusLocacao = request.StatusLocacao,
-                    QuilometragemInicial = request.QuilometragemInicial,
-                    QuilometragemFinal = request.QuilometragemFinal,
-                    DataDevolucao = request.DataDevolucao,
-                    Observacoes = request.Observacoes
-                };
-
-                await _locacaoVeiculoRepository.AddAsync(locacao);
-
-                log.Information("Locação para o Veiculo {VeiculoId} inserido com sucesso. ID: {Id}.", request.VeiculoId, locacao.Id);
-                return locacao.Id;
+                return await _service.CriarLocacao(request);
             }
             catch (Exception ex)
             {

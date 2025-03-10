@@ -52,6 +52,7 @@ using RentFleet.Application.Queries.Reserva;
 using RentFleet.Application.Commands.LocacaoVeiculo;
 using RentFleet.Application.Handlers.LocacaoVeiculo;
 using RentFleet.Application.Queries.LocacaoVeiculo;
+using RentFleet.Application.Services;
 
 namespace RentFleet.API.Extensions
 {
@@ -75,6 +76,9 @@ namespace RentFleet.API.Extensions
             services.AddScoped<IValorLocacaoRepository, ValorLocacaoRepository>();
             services.AddScoped<IReservaRepository, ReservaRepository>();
             services.AddScoped<ILocacaoVeiculoRepository, LocacaoVeiculoRepository>();
+
+            // Registrando o LocacaoVeiculoService como um serviço de aplicação
+            services.AddTransient<LocacaoVeiculoService>();
 
             // Registra serviços de infraestrutura
             services.AddScoped<PasswordHasher>();
